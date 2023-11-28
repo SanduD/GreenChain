@@ -110,13 +110,15 @@ const Login = ({ navigation }) => {
                   setHidePassword={setHidePassword}
                 />
 
-                <StyledButton onPress={handleLogIn}>
-                  <ButtonText>Login</ButtonText>
-                </StyledButton>
+                <View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center' }}>
+                  <StyledButton onPress={handleLogIn}>
+                    <ButtonText>Login</ButtonText>
+                  </StyledButton>
 
-                <StyledButton onPress={handleSignUp}>
-                  <ButtonText>Register</ButtonText>
-                </StyledButton>
+                  <StyledButton onPress={handleSignUp}>
+                    <ButtonText>Register</ButtonText>
+                  </StyledButton>
+                </View>
 
                 <Line />
 

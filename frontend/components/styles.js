@@ -25,7 +25,7 @@ export const StyledContainer = styled.View`
   flex: 1;
   padding: 25px;
   background-color: ${primary};
-  padding-top: ${StatusBarHeight}+60px;
+  padding-top: 10px;
 `;
 
 export const InnerContainer = styled.View`
@@ -134,7 +134,10 @@ export const StyledButton = styled.TouchableOpacity`
   border-radius: 5px;
   margin-vertical: 5px;
   height: 60px;
+  width: 48%;
   align-items: center;
+  margin-right: 5px;
+  margin-left: 5px;
 
   ${props =>
     props.google == true &&
@@ -142,6 +145,7 @@ export const StyledButton = styled.TouchableOpacity`
   background-color:${Colors.white};
   flex-direction:row;
   justify-coontent:center;
+  width:100%;
   `}
 `;
 
