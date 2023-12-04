@@ -3,8 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from '../screens/Login';
-import Signup from '../screens/Signup';
-import Welcome from '../screens/Welcome';
+import Tabs from './tabs';
 
 import { Colors } from '../components/styles';
 const { primary, tertiary } = Colors;
@@ -30,11 +29,8 @@ const RootStack = () => {
         }}
         initialRouteName="Login"
       >
-        {/* <Stack.Screen name="Loginwithphone" component={Loginwithphone} /> */}
-
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Signup" component={Signup} />
-        <Stack.Screen name="Welcome" component={Welcome} />
+        <Stack.Screen name="HomeTabs" component={Tabs} />
       </Stack.Navigator>
     </NavigationContainer>
   );
