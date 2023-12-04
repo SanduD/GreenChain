@@ -3,8 +3,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 import Login from '../screens/Login';
-import Signup from '../screens/Signup';
-import Welcome from '../screens/Welcome';
 import Tabs from './tabs';
 
 import { Colors } from '../components/styles';
