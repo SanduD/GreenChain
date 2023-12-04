@@ -5,7 +5,7 @@ import { getFirestore } from 'firebase/firestore';
 
 // Configurația Firebase
 const firebaseConfig = {
-  apiKey: 'AIzaSyBMn18-77_YVXpFs1yZEbG8jWL7dDIqjUE',
+  apiKey: 'AIzaSyBOqqIEchBTJDX7mxsabA60vGZUR9j50gQ',
   authDomain: 'greenchain-auth.firebaseapp.com',
   projectId: 'greenchain-auth',
   storageBucket: 'greenchain-auth.appspot.com',

@@ -38,19 +38,21 @@ const { brand, accent1, primary } = Colors;
 //keyboard avoiding view
 
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper';
-//mention in documentation that you have problem with firebase.js version
-//and with virtual manager divices with network connectivity
-//version incompatibility
+
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const auth = FIREBASE_AUTH;
 
+  const handleGoogleSignIn = async () => {
+    console.log('Google Sign In');
+  };
+
   const handleLogIn = async () => {
     try {
       const response = await signInWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Welcome');
+      navigation.navigate('HomeTabs');
       console.log(response);
     } catch (error) {
       alert(error.message);
@@ -60,7 +62,7 @@ const Login = ({ navigation }) => {
   const handleSignUp = async () => {
     try {
       const response = await createUserWithEmailAndPassword(auth, email, password);
-      navigation.navigate('Welcome');
+      navigation.navigate('HomeTabs');
       console.log(response);
     } catch (error) {
       alert(error.message);
@@ -80,7 +82,7 @@ const Login = ({ navigation }) => {
             initialValues={{ email: '', password: '' }}
             onSubmit={values => {
               console.log(values);
-              navigation.navigate('Welcome');
+              navigation.navigate('HomeTabs');
             }}
           >
             {({ handleBlur, handleSubmit, values }) => (
@@ -122,7 +124,7 @@ const Login = ({ navigation }) => {
 
                 <Line />
 
-                <StyledButton google={true} onPress={handleSubmit}>
+                <StyledButton google={true} onPress={handleGoogleSignIn}>
                   <Fontisto name="google" color={primary} size={25} />
                   <ButtonText google={true}>Sign in with Google</ButtonText>
                 </StyledButton>
