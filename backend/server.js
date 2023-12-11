@@ -1,14 +1,17 @@
-//mongodb
+import express from 'express';
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-require('./config/db');
+dotenv.config();
 
-const app = require('express')();
-const port = 5000;
+const app = express();
+app.use(express.json());
 
-//accepting post from data
-const bodyParser = require('express').json;
-app.use(bodyParser());
-
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    app.listen(process.env.PORT, () => console.log(`listening on port ${process.env.PORT}!`));
+  })
+  .catch(err => {
+    console.log(err);
+  });
