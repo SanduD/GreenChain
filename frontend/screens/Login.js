@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { StatusBar } from 'expo-status-bar';
 
 //icons
@@ -30,6 +30,7 @@ import { View } from 'react-native';
 
 import { FIREBASE_AUTH } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 
 //Colors
 
@@ -43,11 +44,9 @@ const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState();
+  const [userInfo, setUserInfo] = useState(null);
   const auth = FIREBASE_AUTH;
-
-  const handleGoogleSignIn = async () => {
-    console.log('Google Sign In');
-  };
 
   const handleLogIn = async () => {
     try {
@@ -67,6 +66,31 @@ const Login = ({ navigation }) => {
     } catch (error) {
       alert(error.message);
     }
+  };
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId: '896289313512-cmnr9mpdfq447kvqbtr616nch6llehg5.apps.googleusercontent.com',
+    });
+  }, []);
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await GoogleSignin.hasPlayServices();
+      const user = await GoogleSignin.signIn();
+      setUserInfo(user);
+      console.log(user);
+      setError(null);
+      navigation.navigate('HomeTabs');
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const logout = () => {
+    setUserInfo();
+    GoogleSignin.revokeAccess();
+    GoogleSignin.signOut();
   };
 
   return (
