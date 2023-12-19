@@ -30,7 +30,7 @@ import { View } from 'react-native';
 
 import { FIREBASE_AUTH } from '../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
+import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 //Colors
 
