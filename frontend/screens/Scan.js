@@ -20,7 +20,7 @@ const Scan = ({ navigation }) => {
   };
 
   const fetchProductData = async barcode => {
-    const apiKey = '';
+    const apiKey = 'mm8sqkm40527w26oiw0804odjzsf57';
     const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${apiKey}`;
 
     try {
