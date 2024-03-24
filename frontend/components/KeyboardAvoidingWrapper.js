@@ -1,6 +1,4 @@
-import React, { Children } from 'react';
-import { Dimensions } from 'react-native';
-import { useState } from 'react';
+import React from 'react';
 import { View } from 'react-native';
 
 //keybard avoiding view

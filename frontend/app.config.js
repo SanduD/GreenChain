@@ -12,6 +12,7 @@ export default {
       backgroundColor: '#ffffff',
     },
     plugins: ['@react-native-google-signin/google-signin'],
+    plugins: ['expo-font'],
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,

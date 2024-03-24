@@ -4,7 +4,7 @@
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "chai": "^4.3.10",
     "ethers": "^5.7.2",
-    "hardhat": "^2.19.2"
+    "hardhat": "^2.19.4"
   },
   "dependencies": {
     "@openzeppelin/contracts": "^5.0.1",

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { StatusBar } from 'expo-status-bar';
 
 //icons
 import { Octicons, Ionicons, Fontisto } from '@expo/vector-icons';
@@ -18,12 +17,7 @@ import {
   StyledTextInput,
   Colors,
   ButtonText,
-  MsgBox,
   Line,
-  ExtraView,
-  ExtraText,
-  TextLink,
-  TextLinkContent,
 } from './../components/styles';
 import { Formik } from 'formik';
 import { View } from 'react-native';
@@ -33,7 +27,6 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'fire
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 
 //Colors
-
 const { brand, accent1, primary } = Colors;
 
 //keyboard avoiding view
@@ -96,7 +89,6 @@ const Login = ({ navigation }) => {
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
-        <StatusBar style="dark"></StatusBar>
         <InnerContainer>
           <PageLogo resizeMode="cover" source={require('./../assets/img/logo.png')}></PageLogo>
           <PageTitle>Welcome!</PageTitle>
@@ -177,7 +169,7 @@ const MyTextInput = ({ label, icon, isPassword, hidePassword, setHidePassword, .
       <StyledTextInput {...props} />
       {isPassword && (
         <RightIcon onPress={() => setHidePassword(!hidePassword)}>
-          <Ionicons name={hidePassword ? 'md-eye-off' : 'md-eye'} size={30} color={accent1}></Ionicons>
+          <Ionicons name={hidePassword ? 'eye-off' : 'eye'} size={30} color={accent1}></Ionicons>
         </RightIcon>
       )}
     </View>
