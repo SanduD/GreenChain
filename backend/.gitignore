@@ -4,9 +4,6 @@
 ### dotenv ###
 .env
 
-package-lock.json
-package.json
-
 ### Node ###
 # Logs
 logs

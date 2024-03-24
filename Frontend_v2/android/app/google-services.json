@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "930675864297",
+    "project_id": "greenchain-61b6a",
+    "storage_bucket": "greenchain-61b6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:930675864297:android:0422b8c8c7b458bee63678",
+        "android_client_info": {
+          "package_name": "com.frontend_v2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "930675864297-lfa22v788co8dq1u73qhbnv1pne64sce.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.frontend_v2",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "930675864297-lktl7hananjjjbfob2mo7m8pjma5m3ir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdlE58-MR9xrrtfF2XhipIzCVhTGRSYN4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "930675864297-4acaul7nq0gl0ig81p5bb5ihnrnvv3fc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
