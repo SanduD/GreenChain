@@ -1,6 +1,6 @@
-import mongoose from 'mongoose';
+import mongoose from 'mongoose'
 
-const Schema = mongoose.Schema;
+const Schema = mongoose.Schema
 
 const userSchema = new Schema({
   name: {
@@ -21,14 +21,19 @@ const userSchema = new Schema({
   },
   walletAddress: {
     type: String,
-    required: true,
+    required: false,
     default: null,
   },
   createdAt: {
     type: Date,
     default: Date.now,
   },
-});
+  fcmRegistrationToken: {
+    type: String,
+    required: true,
+    default: null,
+  },
+})
 
-const User = mongoose.model('User', userSchema);
-export default User;
+const User = mongoose.model('User', userSchema)
+export default User
