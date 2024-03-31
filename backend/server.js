@@ -6,6 +6,7 @@ import homeRoute from './routes/homeRoute.js'
 import userRoute from './routes/userRoute.js'
 import rewardRoute from './routes/rewardRoute.js'
 import requireAuth from './middleware/requireAuth.js'
+import scanDetailRouter from './routes/scanDetailRoute.js'
 
 dotenv.config()
 const app = express()
@@ -32,5 +33,7 @@ app.use('/user', userRoute)
 app.use(requireAuth)
 app.use('/', homeRoute)
 app.use('/reward', rewardRoute)
+
+app.use('/scandetail', scanDetailRouter)
 
 //app.use('/auth',authRoute);
