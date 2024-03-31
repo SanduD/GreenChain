@@ -11,16 +11,6 @@ const rewardSchema = new mongoose.Schema({
     required: true,
     min: 0,
   },
-  scanType: {
-    type: String,
-    required: true,
-    enum: ['PET', 'Ticket', 'Invoice'], //allow only this types
-  },
-  quantity: {
-    type: Number,
-    required: true,
-    min: 0,
-  },
   savedAtDate: {
     type: Date,
     required: true,
