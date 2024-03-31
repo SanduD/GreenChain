@@ -5,6 +5,7 @@ import cors from 'cors'
 import homeRoute from './routes/homeRoute.js'
 import userRoute from './routes/userRoute.js'
 import rewardRoute from './routes/rewardRoute.js'
+import requireAuth from './middleware/requireAuth.js'
 
 dotenv.config()
 const app = express()
