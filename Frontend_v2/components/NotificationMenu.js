@@ -1,21 +1,45 @@
 /* eslint-disable react/self-closing-comp */
 /* eslint-disable react-native/no-inline-styles */
 /* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList } from 'react-native';
-import { icons, COLORS } from '../constants';
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  FlatList,
+} from 'react-native'
+import { icons, COLORS } from '../constants'
+import { StyledInputLabel } from './styles'
 
 const menuItems = [
-  { id: 'notif1', title: 'Felicitari! O noua recompensa a fost deblocata', icon: require('../assets/icons/bell.png') },
-  { id: 'notif2', title: 'Felicitari! O noua recompensa a fost deblocata', icon: require('../assets/icons/bell.png') },
-  { id: 'notif3', title: 'Felicitari! O noua recompensa a fost deblocata', icon: require('../assets/icons/bell.png') },
-  { id: 'notif4', title: 'Felicitari! O noua recompensa a fost deblocata', icon: require('../assets/icons/bell.png') },
-];
+  {
+    id: 'notif1',
+    title: 'Felicitari! O noua recompensa a fost deblocata',
+    icon: require('../assets/icons/bell.png'),
+  },
+  {
+    id: 'notif2',
+    title: 'Felicitari! O noua recompensa a fost deblocata',
+    icon: require('../assets/icons/bell.png'),
+  },
+  {
+    id: 'notif3',
+    title: 'Felicitari! O noua recompensa a fost deblocata',
+    icon: require('../assets/icons/bell.png'),
+  },
+  {
+    id: 'notif4',
+    title: 'Felicitari! O noua recompensa a fost deblocata',
+    icon: require('../assets/icons/bell.png'),
+  },
+]
 
 const NotificationMenu = ({ isVisible, toggleMenu }) => {
   const handleMenuItemPress = item => {
-    console.log(`${item.title} pressed`);
-  };
+    console.log(`${item.title} pressed`)
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleMenu}>
@@ -37,9 +61,15 @@ const NotificationMenu = ({ isVisible, toggleMenu }) => {
           <FlatList
             data={menuItems}
             renderItem={({ item }) => (
-              <TouchableOpacity key={item.id} style={styles.menuItem} onPress={() => handleMenuItemPress(item)}>
+              <TouchableOpacity
+                key={item.id}
+                style={styles.menuItem}
+                onPress={() => handleMenuItemPress(item)}
+              >
                 <Image source={item.icon} style={styles.menuIcon} />
-                <Text style={styles.menuText}>{item.title}</Text>
+                <StyledInputLabel style={styles.menuText}>
+                  {item.title}
+                </StyledInputLabel>
               </TouchableOpacity>
             )}
             keyExtractor={item => item.id}
@@ -47,8 +77,8 @@ const NotificationMenu = ({ isVisible, toggleMenu }) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -93,6 +123,6 @@ const styles = StyleSheet.create({
   menuText: {
     fontSize: 16,
   },
-});
+})
 
-export default NotificationMenu;
+export default NotificationMenu
