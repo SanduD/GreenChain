@@ -1,15 +1,17 @@
-/* eslint-disable curly */
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react/self-closing-comp */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable no-trailing-spaces */
-/* eslint-disable prettier/prettier */
-import React, { useState } from 'react';
-import { SafeAreaView, View, Text, Image, FlatList, TouchableOpacity } from 'react-native';
-import { COLORS, SIZES, FONTS, icons, images } from '../constants';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import ProfileMenu from '../components/ProfileMenu';
-import NotificationMenu from '../components/NotificationMenu';
+import React, { useState } from 'react'
+import {
+  SafeAreaView,
+  View,
+  Text,
+  Image,
+  FlatList,
+  TouchableOpacity,
+} from 'react-native'
+import { Colors, SubTitle } from '../components/styles'
+import { COLORS, SIZES, FONTS, icons, images } from '../constants'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import ProfileMenu from '../components/ProfileMenu'
+import NotificationMenu from '../components/NotificationMenu'
 const Home = ({ navigation }) => {
   const featuresData = [
     {
@@ -48,7 +50,7 @@ const Home = ({ navigation }) => {
       backgroundColor: COLORS.lightpurple,
       description: 'More',
     },
-  ];
+  ]
 
   const specialPromoData = [
     {
@@ -75,49 +77,57 @@ const Home = ({ navigation }) => {
       title: 'Oferta 4',
       description: "Don't miss it",
     },
-  ];
+  ]
 
   const handleSignOut = async () => {
-    console.log('signout pressed');
+    console.log('signout pressed')
     GoogleSignin.signOut()
       .then(() => {
         //setUser(null);
-        console.log('Google sign out');
+        console.log('Google sign out')
       })
       .catch(error => {
-        console.log(error);
-      });
-    navigation.navigate('Login');
-  };
+        console.log(error)
+      })
+    navigation.navigate('Login')
+  }
 
-  const [features, setFeatures] = useState(featuresData);
-  const [specialPromos, setSpecialPromos] = useState(specialPromoData);
+  const [features, setFeatures] = useState(featuresData)
+  const [specialPromos, setSpecialPromos] = useState(specialPromoData)
 
-  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false);
-  const [isNotificationMenuVisible, setIsNotificationMenuVisible] = useState(false);
+  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false)
+  const [isNotificationMenuVisible, setIsNotificationMenuVisible] =
+    useState(false)
 
   const toggleProfileMenu = () => {
-    setIsProfileMenuVisible(!isProfileMenuVisible);
-    if (isNotificationMenuVisible) setIsNotificationMenuVisible(false);
-  };
+    setIsProfileMenuVisible(!isProfileMenuVisible)
+    if (isNotificationMenuVisible) setIsNotificationMenuVisible(false)
+  }
 
   const toggleNotificationMenu = () => {
-    setIsNotificationMenuVisible(!isNotificationMenuVisible);
-    if (isProfileMenuVisible) setIsProfileMenuVisible(false);
-  };
+    setIsNotificationMenuVisible(!isNotificationMenuVisible)
+    if (isProfileMenuVisible) setIsProfileMenuVisible(false)
+  }
   function renderHeader() {
     return (
       <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
         <View style={{ flex: 1 }}>
-          <Text style={{ ...FONTS.h1 }}>Hello!</Text>
+          <SubTitle>Hello!</SubTitle>
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <NotificationMenu isVisible={isNotificationMenuVisible} toggleMenu={toggleNotificationMenu} />
-          <ProfileMenu isVisible={isProfileMenuVisible} toggleMenu={toggleProfileMenu} navigation={navigation} />
+          <NotificationMenu
+            isVisible={isNotificationMenuVisible}
+            toggleMenu={toggleNotificationMenu}
+          />
+          <ProfileMenu
+            isVisible={isProfileMenuVisible}
+            toggleMenu={toggleProfileMenu}
+            navigation={navigation}
+          />
         </View>
       </View>
-    );
+    )
   }
 
   function renderBanner() {
@@ -139,28 +149,32 @@ const Home = ({ navigation }) => {
           }}
         />
       </View>
-    );
+    )
   }
 
   function renderFeatures() {
     const Header = () => (
       <View style={{ marginBottom: SIZES.padding * 2 }}>
-        <Text style={{ ...FONTS.h3, textAlign: 'center' }}>Comenzi Rapide</Text>
+        <SubTitle>Comenzi Rapide</SubTitle>
       </View>
-    );
+    )
 
     const renderItem = ({ item }) => (
       <TouchableOpacity
-        style={{ marginBottom: SIZES.padding * 2, width: 60, alignItems: 'center' }}
+        style={{
+          marginBottom: SIZES.padding * 2,
+          width: 60,
+          alignItems: 'center',
+        }}
         onPress={() => {
           if (item.description === 'Portofel') {
-            navigation.navigate('Wallet');
+            navigation.navigate('Wallet')
           } else if (item.description === 'Istoric') {
-            navigation.navigate('History');
+            navigation.navigate('History')
           } else if (item.description === 'Transfer') {
-            navigation.navigate('TransferScreen');
+            navigation.navigate('TransferScreen')
           } else {
-            console.log(item.description);
+            console.log(item.description)
           }
         }}
       >
@@ -185,9 +199,18 @@ const Home = ({ navigation }) => {
             }}
           />
         </View>
-        <Text style={{ textAlign: 'center', flexWrap: 'wrap', ...FONTS.body4 }}>{item.description}</Text>
+        <Text
+          style={{
+            textAlign: 'center',
+            flexWrap: 'wrap',
+            ...FONTS.body4,
+            color: Colors.primary,
+          }}
+        >
+          {item.description}
+        </Text>
       </TouchableOpacity>
-    );
+    )
 
     return (
       <FlatList
@@ -199,7 +222,7 @@ const Home = ({ navigation }) => {
         renderItem={renderItem}
         style={{ marginTop: SIZES.padding * 2 }}
       />
-    );
+    )
   }
 
   function renderComponents() {
@@ -209,7 +232,7 @@ const Home = ({ navigation }) => {
         {renderBanner()}
         {renderFeatures()}
       </View>
-    );
+    )
 
     const renderPromoHeader = () => (
       <View
@@ -225,7 +248,7 @@ const Home = ({ navigation }) => {
           <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>View All</Text>
         </TouchableOpacity>
       </View>
-    );
+    )
 
     const renderItem = ({ item }) => (
       <TouchableOpacity
@@ -267,7 +290,7 @@ const Home = ({ navigation }) => {
           <Text style={{ ...FONTS.body4 }}>{item.description}</Text>
         </View>
       </TouchableOpacity>
-    );
+    )
 
     return (
       <FlatList
@@ -281,10 +304,14 @@ const Home = ({ navigation }) => {
         showsVerticalScrollIndicator={false}
         ListFooterComponent={<View style={{ marginBottom: 80 }}></View>}
       />
-    );
+    )
   }
 
-  return <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>{renderComponents()}</SafeAreaView>;
-};
+  return (
+    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
+      {renderComponents()}
+    </SafeAreaView>
+  )
+}
 
-export default Home;
+export default Home

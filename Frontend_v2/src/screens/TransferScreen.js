@@ -1,14 +1,13 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React from 'react'
+import { View, Text, StyleSheet } from 'react-native'
 
 const TransferScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>Transfer screen</Text>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -19,6 +18,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
   },
-});
+})
 
-export default TransferScreen;
+export default TransferScreen

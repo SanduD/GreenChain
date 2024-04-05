@@ -1,17 +1,29 @@
-/* eslint-disable prettier/prettier */
-import React, { useState, useRef } from 'react';
-import { View, Text, TouchableOpacity, Image, StyleSheet, FlatList, Alert } from 'react-native';
-import { icons, COLORS } from '../constants';
-import auth from '@react-native-firebase/auth';
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import Login from '../screens/Login';
+import React, { useState, useRef } from 'react'
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  StyleSheet,
+  FlatList,
+  Alert,
+} from 'react-native'
+import { icons, COLORS } from '../constants'
+import auth from '@react-native-firebase/auth'
+import { GoogleSignin } from '@react-native-google-signin/google-signin'
+import Login from '../screens/Login'
+import { Colors } from './styles'
 
 const menuItems = [
-  { id: 'profile', title: 'Profile', icon: require('../assets/icons/user.png') },
+  {
+    id: 'profile',
+    title: 'Profile',
+    icon: require('../assets/icons/user.png'),
+  },
   { id: 'wallet', title: 'Wallet', icon: icons.wallet },
   { id: 'help', title: 'Help', icon: icons.info },
   { id: 'logout', title: 'Logout', icon: icons.exit },
-];
+]
 
 const ProfileMenu = ({ isVisible, toggleMenu, navigation }) => {
   const handleMenuItemPress = item => {
@@ -20,16 +32,16 @@ const ProfileMenu = ({ isVisible, toggleMenu, navigation }) => {
       GoogleSignin.signOut()
         .then(() => {
           //setUser(null);
-          console.log('Google sign out');
-          navigation.navigate('Login');
+          console.log('Google sign out')
+          navigation.navigate('Login')
         })
         .catch(error => {
-          console.log(error);
-        });
+          console.log(error)
+        })
     } else {
-      console.log(`${item.title} pressed`);
+      console.log(`${item.title} pressed`)
     }
-  };
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={toggleMenu}>
@@ -40,7 +52,11 @@ const ProfileMenu = ({ isVisible, toggleMenu, navigation }) => {
           <FlatList
             data={menuItems}
             renderItem={({ item }) => (
-              <TouchableOpacity key={item.id} style={styles.menuItem} onPress={() => handleMenuItemPress(item)}>
+              <TouchableOpacity
+                key={item.id}
+                style={styles.menuItem}
+                onPress={() => handleMenuItemPress(item)}
+              >
                 <Image source={item.icon} style={styles.menuIcon} />
                 <Text style={styles.menuText}>{item.title}</Text>
               </TouchableOpacity>
@@ -50,8 +66,8 @@ const ProfileMenu = ({ isVisible, toggleMenu, navigation }) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -94,7 +110,8 @@ const styles = StyleSheet.create({
   },
   menuText: {
     fontSize: 16,
+    color: Colors.primary,
   },
-});
+})
 
-export default ProfileMenu;
+export default ProfileMenu

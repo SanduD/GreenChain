@@ -1,9 +1,8 @@
-/* eslint-disable prettier/prettier */
 import styled from 'styled-components'
 //colors
 
 export const Colors = {
-  primary: '#2D6A4F', // Dark Green
+  primary: '#116A4F', // Dark Green
   secondary: '#74C69D', // Light Green
   tertiary: '#D9F09B', // Light Lime Green
   quaternary: '#171F23', // Almost Black (for text, icons)
@@ -74,11 +73,12 @@ export const PageTitle = styled.Text`
 `
 
 export const SubTitle = styled.Text`
-  font-size: 18px;
+  font-size: 20px;
   margin-bottom: 20px;
   letter-spacing: 1px;
   font-weight: bold;
-  color: ${tertiary};
+  color: ${primary};
+  padding: 10px;
 
   ${props =>
     props.welcome &&
@@ -106,8 +106,8 @@ export const StyledTextInput = styled.TextInput`
 `
 
 export const StyledInputLabel = styled.Text`
-  color: ${secondary};
-  font-size: 13px;F
+  color: ${primary};
+  font-size: 16px;
   text-align: left;
 `
 export const LeftIcon = styled.View`
@@ -125,7 +125,7 @@ export const RightIcon = styled.TouchableOpacity`
 
 export const StyledButton = styled.TouchableOpacity`
   padding: 15px;
-  background-color: ${brand};
+  background-color: ${secondary};
   justify-content: center;
   border-radius: 5px;
   margin-vertical: 5px;

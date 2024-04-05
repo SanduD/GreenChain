@@ -1,17 +1,16 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React from 'react'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Login from '../screens/Login';
-import Tabs from './tabs';
-import Wallet from '../screens/Wallet';
-import TransferScreen from '../screens/TransferScreen';
-import History from '../screens/History';
-import { Colors } from '../components/styles';
-const { primary, tertiary } = Colors;
+import Login from '../screens/Login'
+import Tabs from './tabs'
+import Wallet from '../screens/Wallet'
+import TransferScreen from '../screens/TransferScreen'
+import History from '../screens/History'
+import { Colors } from '../components/styles'
+const { primary, tertiary } = Colors
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator()
 
 const RootStack = () => {
   return (
@@ -46,7 +45,7 @@ const RootStack = () => {
         <Stack.Screen name="TransferScreen" component={TransferScreen} />
       </Stack.Navigator>
     </NavigationContainer>
-  );
-};
+  )
+}
 
-export default RootStack;
+export default RootStack

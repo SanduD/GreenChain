@@ -1,5 +1,5 @@
-import { Dimensions } from 'react-native';
-const { width, height } = Dimensions.get('window');
+import { Dimensions } from 'react-native'
+const { width, height } = Dimensions.get('window')
 
 export const COLORS = {
   // base colors
@@ -29,7 +29,7 @@ export const COLORS = {
   darkgray: '#C3C6C7',
 
   transparent: 'transparent',
-};
+}
 
 export const SIZES = {
   // global sizes
@@ -54,7 +54,7 @@ export const SIZES = {
   // app dimensions
   width,
   height,
-};
+}
 
 export const FONTS = {
   largeTitle: { fontSize: SIZES.largeTitle, lineHeight: 55 },
@@ -67,8 +67,8 @@ export const FONTS = {
   body3: { fontSize: SIZES.body3, lineHeight: 22 },
   body4: { fontSize: SIZES.body4, lineHeight: 22 },
   body5: { fontSize: SIZES.body5, lineHeight: 22 },
-};
+}
 
-const appTheme = { COLORS, SIZES, FONTS };
+const appTheme = { COLORS, SIZES, FONTS }
 
-export default appTheme;
+export default appTheme
