@@ -1,17 +1,24 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet } from 'react-native';
-import { createBottomTabNavigator, BottomTabBar } from '@react-navigation/bottom-tabs';
-import Svg, { Path } from 'react-native-svg';
+import React from 'react'
+import { View, Image, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  createBottomTabNavigator,
+  BottomTabBar,
+} from '@react-navigation/bottom-tabs'
+import Svg, { Path } from 'react-native-svg'
 
-import Home from '../screens/Home';
-import Scan from '../screens/Scan';
-import { COLORS, icons } from '../constants';
+import Home from '../screens/Home'
+import Scan from '../screens/Scan'
+import { COLORS, icons } from '../constants'
 
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator()
 
-const TabBarCustomButton = ({ accessibilityLabel, accessibilityState, children, onPress }) => {
-  var isSelected = accessibilityState.selected;
+const TabBarCustomButton = ({
+  accessibilityLabel,
+  accessibilityState,
+  children,
+  onPress,
+}) => {
+  var isSelected = accessibilityState.selected
 
   if (isSelected) {
     return (
@@ -49,7 +56,7 @@ const TabBarCustomButton = ({ accessibilityLabel, accessibilityState, children, 
           {children}
         </TouchableOpacity>
       </View>
-    );
+    )
   } else {
     return (
       <TouchableOpacity
@@ -66,13 +73,13 @@ const TabBarCustomButton = ({ accessibilityLabel, accessibilityState, children, 
       >
         {children}
       </TouchableOpacity>
-    );
+    )
   }
-};
+}
 
 const CustomTabBar = props => {
-  return <BottomTabBar {...props.props} />;
-};
+  return <BottomTabBar {...props.props} />
+}
 
 const Tabs = () => {
   return (
@@ -147,8 +154,8 @@ const Tabs = () => {
         }}
       />
     </Tab.Navigator>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   shadow: {
@@ -162,6 +169,6 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-});
+})
 
-export default Tabs;
+export default Tabs

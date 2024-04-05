@@ -1,9 +1,11 @@
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import { WalletConnectModal, useWalletConnectModal } from '@walletconnect/modal-react-native';
+import React from 'react'
+import { View, Text, StyleSheet, Pressable } from 'react-native'
+import {
+  WalletConnectModal,
+  useWalletConnectModal,
+} from '@walletconnect/modal-react-native'
 
-const projectId = 'b14f479057c1f8360f22b46dcf75f24b';
+const projectId = 'b14f479057c1f8360f22b46dcf75f24b'
 
 const providerMetadata = {
   name: 'GreenChain',
@@ -14,26 +16,30 @@ const providerMetadata = {
     native: 'YOUR_APP_SCHEME://',
     universal: 'YOUR_APP_UNIVERSAL_LINK.com',
   },
-};
+}
 const Wallet = () => {
-  const { isOpen, open, close, provider, isConnected, address } = useWalletConnectModal();
+  const { isOpen, open, close, provider, isConnected, address } =
+    useWalletConnectModal()
 
   const onPress = () => {
     if (isConnected) {
-      provider.disconnect();
+      provider.disconnect()
     } else {
-      open();
+      open()
     }
-  };
+  }
   return (
     <View style={styles.container}>
       <Pressable onPress={() => open()} style={{ marginTop: 16 }}>
         <Text>{isConnected ? address : 'Connect'}</Text>
       </Pressable>
-      <WalletConnectModal projectId={projectId} providerMetadata={providerMetadata} />
+      <WalletConnectModal
+        projectId={projectId}
+        providerMetadata={providerMetadata}
+      />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -44,6 +50,6 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 20,
   },
-});
+})
 
-export default Wallet;
+export default Wallet

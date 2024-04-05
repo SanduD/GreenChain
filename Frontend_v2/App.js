@@ -1,6 +1,6 @@
 // React navigation stack
-import RootStack from './navigators/RootStack';
+import RootStack from './src/navigators/RootStack'
 
 export default function App() {
-  return <RootStack />;
+  return <RootStack />
 }

@@ -1,40 +1,58 @@
-/* eslint-disable react/no-unstable-nested-components */
-/* eslint-disable react-native/no-inline-styles */
-/* eslint-disable prettier/prettier */
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput, Button, Alert, Modal } from 'react-native';
-import { COLORS, FONTS, SIZES, icons } from '../constants';
-import { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import axios from 'axios';
-import { Camera, useCameraDevice, useCodeScanner, useCameraPermission } from 'react-native-vision-camera';
+import React from 'react'
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  TextInput,
+  Button,
+  Alert,
+  Modal,
+} from 'react-native'
+
+import {
+  StyledInputLabel,
+  Colors,
+  StyledButton,
+  ButtonText,
+} from '../components/styles'
+import { COLORS, FONTS, SIZES, icons } from '../constants'
+import { useState, useEffect } from 'react'
+import { StyleSheet } from 'react-native'
+import axios from 'axios'
+import {
+  Camera,
+  useCameraDevice,
+  useCodeScanner,
+  useCameraPermission,
+} from 'react-native-vision-camera'
 
 // const Scan = ({ navigation }) => {};
 
 const Scan = ({ navigation }) => {
   // const [hasPermission, setHasPermission] = useState(null);
-  const [barcodeValue, setBarcodeValue] = useState('');
-  const [scanned, setScanned] = useState(false);
-  const [text, setText] = useState('Not yet scanned');
-  const [lastScannedCode, setLastScannedCode] = useState('');
-  const [modalVisible, setModalVisible] = useState(false);
+  const [barcodeValue, setBarcodeValue] = useState('')
+  const [scanned, setScanned] = useState(false)
+  const [text, setText] = useState('Not yet scanned')
+  const [lastScannedCode, setLastScannedCode] = useState('')
+  const [modalVisible, setModalVisible] = useState(false)
 
-  const [hasPermission, setHasPermission] = useState(null);
-  const { requestPermission } = useCameraPermission();
-  const device = useCameraDevice('back');
+  const [hasPermission, setHasPermission] = useState(null)
+  const { requestPermission } = useCameraPermission()
+  const device = useCameraDevice('back')
 
   const codeScanner = useCodeScanner({
     codeTypes: ['qr', 'ean-13'],
     onCodeScanned: codes => {
-      console.log(`Scanned ${codes.length} codes!`, codes);
-      setScanned(true);
-      setText(codes[0].value);
+      console.log(`Scanned ${codes.length} codes!`, codes)
+      setScanned(true)
+      setText(codes[0].value)
     },
-  });
+  })
 
   const renderCamera = () => {
-    console.log('render camera');
-    if (device == null) return null;
+    console.log('render camera')
+    if (device == null) return null
 
     return (
       <>
@@ -51,16 +69,16 @@ const Scan = ({ navigation }) => {
           </View>
         </View>
       </>
-    );
-  };
+    )
+  }
 
   const requestCameraPermission = async () => {
-    const permissionGranted = await requestPermission();
-    setHasPermission(permissionGranted);
-  };
+    const permissionGranted = await requestPermission()
+    setHasPermission(permissionGranted)
+  }
 
   const fetchProductData = async barcode => {
-    console.log('fetch data');
+    console.log('fetch data')
     // const apiKey = 'mm8sqkm40527w26oiw0804odjzsf57';
     // const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${apiKey}`;
 
@@ -72,7 +90,7 @@ const Scan = ({ navigation }) => {
     // } catch (error) {
     //   console.error('Eroare la solicitarea API:', error);
     // }
-  };
+  }
 
   // useEffect(() => {
   //   (async () => {
@@ -83,35 +101,46 @@ const Scan = ({ navigation }) => {
 
   //what happens when you scan the barcode
   const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true);
+    setScanned(true)
     //setText(data);
-    fetchProductData(data);
-  };
+    fetchProductData(data)
+  }
 
   const showInfoAlert = () => {
     Alert.alert(
       'Ajutor Scanare',
       'Folosește camera pentru a scana rapid codul de bare al PET-ului sau introdu manual codul dacă eticheta este deteriorată. Asigură-te că PET-ul este bine iluminat și că întregul cod de bare este vizibil în cadru pentru a facilita scanarea corectă.',
-      [{ text: 'Am înțeles', onPress: () => console.log('Butonul Am înțeles a fost apăsat') }],
-    );
-  };
+      [
+        {
+          text: 'Am înțeles',
+          onPress: () => console.log('Butonul Am înțeles a fost apăsat'),
+        },
+      ]
+    )
+  }
 
   const handlePressInfo = () => {
-    setModalVisible(true);
-  };
+    setModalVisible(true)
+  }
 
   const handleCloseModal = () => {
-    setModalVisible(false);
-  };
+    setModalVisible(false)
+  }
 
   const InfoModal = ({ isVisible, onClose }) => (
-    <Modal animationType="slide" transparent={true} visible={isVisible} onRequestClose={onClose}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={isVisible}
+      onRequestClose={onClose}
+    >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
           <Text style={styles.modalText}>
-            Folosește camera pentru a scana rapid codul de bare al PET-ului sau introdu manual codul dacă eticheta este
-            deteriorată. Asigură-te că PET-ul este bine iluminat și că întregul cod de bare este vizibil în cadru pentru
-            a facilita scanarea corectă.
+            Folosește camera pentru a scana rapid codul de bare al PET-ului sau
+            introdu manual codul dacă eticheta este deteriorată. Asigură-te că
+            PET-ul este bine iluminat și că întregul cod de bare este vizibil în
+            cadru pentru a facilita scanarea corectă.
           </Text>
           <TouchableOpacity style={styles.openButton} onPress={onClose}>
             <Text style={styles.textStyle}>Am înțeles</Text>
@@ -119,7 +148,7 @@ const Scan = ({ navigation }) => {
         </View>
       </View>
     </Modal>
-  );
+  )
 
   function renderHeader() {
     return (
@@ -150,8 +179,10 @@ const Scan = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <Text style={{ color: COLORS.green, ...FONTS.body3 }}>Scan the product</Text>
+        <View
+          style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
+        >
+          <StyledInputLabel>Scan the product</StyledInputLabel>
         </View>
 
         <TouchableOpacity
@@ -172,12 +203,12 @@ const Scan = ({ navigation }) => {
             style={{
               height: 25,
               width: 25,
-              tintColor: COLORS.white,
+              tintColor: Colors.white,
             }}
           />
         </TouchableOpacity>
       </View>
-    );
+    )
   }
 
   function renderOtherMethods() {
@@ -201,8 +232,8 @@ const Scan = ({ navigation }) => {
             <Button
               title={'Tap to Scan Again'}
               onPress={() => {
-                setScanned(false);
-                setText('Not scanned yet');
+                setScanned(false)
+                setText('Not scanned yet')
               }}
               color="green"
             />
@@ -246,7 +277,10 @@ const Scan = ({ navigation }) => {
             value={barcodeValue}
             onChangeText={setBarcodeValue}
           />
-          <TouchableOpacity style={styles.checkButtonStyle} onPress={() => console.log(barcodeValue)}>
+          <TouchableOpacity
+            style={styles.checkButtonStyle}
+            onPress={() => console.log(barcodeValue)}
+          >
             <Image
               source={icons.check}
               resizeMode="contain"
@@ -260,45 +294,80 @@ const Scan = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-    );
+    )
   }
 
   return (
     <View style={{ flex: 1, backgroundColor: COLORS.transparent }}>
-      <View style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}>{renderHeader()}</View>
+      <View
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 1 }}
+      >
+        {renderHeader()}
+      </View>
 
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         {hasPermission === false && (
           <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ ...FONTS.h3, marginBottom: 10 }}>No access to camera</Text>
-              <Button title={'Allow Camera'} onPress={requestCameraPermission} />
-              <View style={{ height: 230, justifyContent: 'flex-end' }}>{renderOtherMethods()}</View>
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text style={{ ...FONTS.h3, marginBottom: 10 }}>
+                No access to camera
+              </Text>
+              <StyledButton
+                title={'Allow Camera'}
+                onPress={requestCameraPermission}
+              />
+              <View style={{ height: 230, justifyContent: 'flex-end' }}>
+                {renderOtherMethods()}
+              </View>
             </View>
-            <View style={{ height: 230, justifyContent: 'flex-end' }}>{renderOtherMethods()}</View>
+            <View style={{ height: 230, justifyContent: 'flex-end' }}>
+              {renderOtherMethods()}
+            </View>
           </View>
         )}
 
         {hasPermission === null && (
           <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-              <Text style={{ ...FONTS.h3, marginBottom: 10 }}>Requesting for camera permission</Text>
-              <Button title={'Allow Camera'} onPress={requestCameraPermission} />
+            <View
+              style={{
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <Text
+                style={{ ...FONTS.h3, marginBottom: 10, color: Colors.primary }}
+              >
+                Requesting for camera permission
+              </Text>
+              <StyledButton onPress={requestCameraPermission}>
+                <ButtonText>Allow Camera</ButtonText>
+              </StyledButton>
             </View>
-            <View style={{ height: 230, justifyContent: 'flex-end' }}>{renderOtherMethods()}</View>
+            <View style={{ height: 230, justifyContent: 'flex-end' }}>
+              {renderOtherMethods()}
+            </View>
           </View>
         )}
 
         {hasPermission === true && (
           <View style={{ flex: 1 }}>
             <View style={{ flex: 1 }}>{renderCamera()}</View>
-            <View style={{ height: 230, justifyContent: 'flex-end' }}>{renderOtherMethods()}</View>
+            <View style={{ height: 230, justifyContent: 'flex-end' }}>
+              {renderOtherMethods()}
+            </View>
           </View>
         )}
       </View>
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   maintext: {
@@ -388,7 +457,8 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+    color: Colors.primary,
   },
-});
+})
 
-export default Scan;
+export default Scan
