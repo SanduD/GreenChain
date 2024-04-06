@@ -134,19 +134,25 @@ const Scan = ({ navigation }) => {
       visible={isVisible}
       onRequestClose={onClose}
     >
-      <View style={styles.centeredView}>
-        <View style={styles.modalView}>
-          <Text style={styles.modalText}>
-            Folosește camera pentru a scana rapid codul de bare al PET-ului sau
-            introdu manual codul dacă eticheta este deteriorată. Asigură-te că
-            PET-ul este bine iluminat și că întregul cod de bare este vizibil în
-            cadru pentru a facilita scanarea corectă.
-          </Text>
-          <TouchableOpacity style={styles.openButton} onPress={onClose}>
-            <Text style={styles.textStyle}>Am înțeles</Text>
-          </TouchableOpacity>
+      <TouchableOpacity
+        style={styles.overlayModal}
+        activeOpacity={1}
+        onPress={onClose}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Folosește camera pentru a scana rapid codul de bare al PET-ului
+              sau introdu manual codul dacă eticheta este deteriorată.
+              Asigură-te că PET-ul este bine iluminat și că întregul cod de bare
+              este vizibil în cadru pentru a facilita scanarea corectă.
+            </Text>
+            <TouchableOpacity style={styles.openButton} onPress={onClose}>
+              <Text style={styles.textStyle}>Am înțeles</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </TouchableOpacity>
     </Modal>
   )
 
@@ -370,6 +376,12 @@ const Scan = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  overlayModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
   maintext: {
     fontSize: 16,
     color: COLORS.green,
