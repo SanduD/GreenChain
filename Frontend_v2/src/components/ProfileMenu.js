@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import React from 'react'
 import {
   View,
   Text,
@@ -6,13 +6,10 @@ import {
   Image,
   StyleSheet,
   FlatList,
-  Alert,
 } from 'react-native'
 import { icons, COLORS } from '../constants'
-import auth from '@react-native-firebase/auth'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import Login from '../screens/Login'
 import { Colors } from './styles'
+import { useLogout } from '../hooks/useLogout'
 
 const menuItems = [
   {
@@ -26,18 +23,12 @@ const menuItems = [
 ]
 
 const ProfileMenu = ({ isVisible, toggleMenu, navigation }) => {
-  const handleMenuItemPress = item => {
+  const { logout } = useLogout()
+
+  const handleMenuItemPress = async item => {
     if (item.id === 'logout') {
-      // Logica pentru logout
-      GoogleSignin.signOut()
-        .then(() => {
-          //setUser(null);
-          console.log('Google sign out')
-          navigation.navigate('Login')
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      await logout()
+      navigation.navigate('Login')
     } else {
       console.log(`${item.title} pressed`)
     }

@@ -26,7 +26,6 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const user = await User.findOne({ email: req.body.email })
-
   if (!user) {
     registerUser(req, res)
     return

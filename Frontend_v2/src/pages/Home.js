@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   SafeAreaView,
   View,
@@ -6,12 +6,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native'
 import { Colors, SubTitle } from '../components/styles'
 import { COLORS, SIZES, FONTS, icons, images } from '../constants'
-import { GoogleSignin } from '@react-native-google-signin/google-signin'
 import ProfileMenu from '../components/ProfileMenu'
 import NotificationMenu from '../components/NotificationMenu'
+
 const Home = ({ navigation }) => {
   const featuresData = [
     {
@@ -78,19 +79,6 @@ const Home = ({ navigation }) => {
       description: "Don't miss it",
     },
   ]
-
-  const handleSignOut = async () => {
-    console.log('signout pressed')
-    GoogleSignin.signOut()
-      .then(() => {
-        //setUser(null);
-        console.log('Google sign out')
-      })
-      .catch(error => {
-        console.log(error)
-      })
-    navigation.navigate('Login')
-  }
 
   const [features, setFeatures] = useState(featuresData)
   const [specialPromos, setSpecialPromos] = useState(specialPromoData)

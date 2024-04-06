@@ -2,11 +2,11 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 
-import Login from '../screens/Login'
+import Login from '../pages/Login'
 import Tabs from './tabs'
-import Wallet from '../screens/Wallet'
-import TransferScreen from '../screens/TransferScreen'
-import History from '../screens/History'
+import Wallet from '../pages/Wallet'
+import TransferScreen from '../pages/Transfer'
+import History from '../pages/History'
 import { Colors } from '../components/styles'
 const { primary, tertiary } = Colors
 

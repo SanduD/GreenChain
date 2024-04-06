@@ -6,8 +6,8 @@ import {
 } from '@react-navigation/bottom-tabs'
 import Svg, { Path } from 'react-native-svg'
 
-import Home from '../screens/Home'
-import Scan from '../screens/Scan'
+import Home from '../pages/Home'
+import Scan from '../pages/Scan'
 import { COLORS, icons } from '../constants'
 
 const Tab = createBottomTabNavigator()

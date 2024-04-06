@@ -21,54 +21,32 @@ import {
 } from '../components/styles'
 import { Formik } from 'formik'
 import { View, Alert } from 'react-native'
-
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-
 import auth from '@react-native-firebase/auth'
-
 //Colors
 const { brand, accent1, primary } = Colors
-
 //keyboard avoiding view
-
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
+import { useLogin } from '../hooks/useLogin'
+import InfoModal from '../components/InfoModal'
 
 const Login = ({ navigation }) => {
   const [hidePassword, setHidePassword] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [error, setError] = useState()
   const [user, setUser] = useState(null)
+  const [isModalVisible, setModalVisible] = useState(false)
 
-  // const auth = FIREBASE_AUTH;
+  const { login, isLoading, error, reset } = useLogin()
 
-  const isValidEmail = email => {
-    const re =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-    return re.test(String(email).toLowerCase())
+  const handleCloseModal = () => {
+    setModalVisible(false)
+    reset()
   }
 
   const handleLogIn = async () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Eroare', 'Te rog să completezi toate câmpurile.')
-      return
-    }
-
-    // Verifică formatul e-mailului
-    if (!isValidEmail(email)) {
-      Alert.alert('Eroare', 'Formatul adresei de e-mail nu este valid.')
-      return
-    }
-    auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        setUser(userCredentials.user)
-        console.log('User signed in!')
-        navigation.navigate('HomeTabs')
-      })
-      .catch(error => {
-        console.error(error)
-      })
+    setModalVisible(false)
+    await login(email, password)
   }
 
   const handleSignUp = async () => {
@@ -100,7 +78,14 @@ const Login = ({ navigation }) => {
         '930675864297-lktl7hananjjjbfob2mo7m8pjma5m3ir.apps.googleusercontent.com',
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     })
-  }, [])
+    if (!isLoading) {
+      if (error == null) {
+        navigation.navigate('HomeTabs')
+      } else {
+        setModalVisible(true)
+      }
+    }
+  }, [isLoading, error])
 
   const handleGoogleSignIn = async () => {
     try {
@@ -201,6 +186,11 @@ const Login = ({ navigation }) => {
                   <Icon name="google" color={primary} size={25} />
                   <ButtonText google={true}>Sign in with Google</ButtonText>
                 </StyledButton>
+                <InfoModal
+                  isVisible={isModalVisible}
+                  onClose={handleCloseModal}
+                  content={error}
+                />
 
                 {/* <ExtraView>
                   <ExtraText>Don't have an account already?</ExtraText>
