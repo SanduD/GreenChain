@@ -18,7 +18,7 @@ const send = require('../assets/icons/send.png')
 const user = require('../assets/icons/user.png')
 const wallet = require('../assets/icons/wallet.png')
 const exit = require('../assets/icons/exit.png')
-
+const becomeGreener = require('../assets/img/becomeGreener.png')
 export default {
   backimage,
   bell,
@@ -40,4 +40,5 @@ export default {
   user,
   wallet,
   exit,
+  becomeGreener,
 }

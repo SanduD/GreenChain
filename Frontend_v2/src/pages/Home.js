@@ -13,6 +13,8 @@ import { COLORS, SIZES, FONTS, icons, images } from '../constants'
 import ProfileMenu from '../components/ProfileMenu'
 import NotificationMenu from '../components/NotificationMenu'
 
+import { useAuthContext } from '../hooks/useAuthContext'
+
 const Home = ({ navigation }) => {
   const featuresData = [
     {
@@ -80,6 +82,11 @@ const Home = ({ navigation }) => {
     },
   ]
 
+  const { userInfo } = useAuthContext()
+
+  const welcomeMessage =
+    userInfo && userInfo.user ? 'Hello, ' + userInfo.user.name + '!' : 'Hello!'
+
   const [features, setFeatures] = useState(featuresData)
   const [specialPromos, setSpecialPromos] = useState(specialPromoData)
 
@@ -100,7 +107,7 @@ const Home = ({ navigation }) => {
     return (
       <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
         <View style={{ flex: 1 }}>
-          <SubTitle>Hello!</SubTitle>
+          <SubTitle>{welcomeMessage}</SubTitle>
         </View>
 
         <View style={{ flexDirection: 'row', alignItems: 'center' }}>

@@ -1,6 +1,5 @@
 /* eslint-disable prettier/prettier */
 import React, { useState, useEffect } from 'react'
-import { useNavigation } from '@react-navigation/native'
 //icons
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -22,22 +21,25 @@ import {
 import { Formik } from 'formik'
 import { View, Alert } from 'react-native'
 import { GoogleSignin } from '@react-native-google-signin/google-signin'
-import auth from '@react-native-firebase/auth'
 //Colors
 const { brand, accent1, primary } = Colors
 //keyboard avoiding view
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import { useLogin } from '../hooks/useLogin'
 import InfoModal from '../components/InfoModal'
+import { useAuthContext } from '../hooks/useAuthContext'
+import { useNavigation } from '@react-navigation/native'
+import VideoComponent from '../components/videoComponent'
 
-const Login = ({ navigation }) => {
+const Login = () => {
   const [hidePassword, setHidePassword] = useState(true)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState(null)
   const [isModalVisible, setModalVisible] = useState(false)
 
-  const { login, isLoading, error, reset } = useLogin()
+  const navigation = useNavigation()
+
+  const { login, googleSignIn, isLoading, error, reset } = useLogin()
 
   const handleCloseModal = () => {
     setModalVisible(false)
@@ -49,27 +51,13 @@ const Login = ({ navigation }) => {
     await login(email, password)
   }
 
-  const handleSignUp = async () => {
-    if (!email.trim() || !password.trim()) {
-      Alert.alert('Eroare', 'Te rog să completezi toate câmpurile.')
-      return
-    }
+  const handleRegisterButton = () => {
+    navigation.navigate('Register')
+  }
 
-    // Verifică formatul e-mailului
-    if (!isValidEmail(email)) {
-      Alert.alert('Eroare', 'Formatul adresei de e-mail nu este valid.')
-      return
-    }
-    auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(userCredentials => {
-        setUser(userCredentials.user)
-        console.log('User account created & signed in!')
-        navigation.navigate('HomeTabs')
-      })
-      .catch(error => {
-        console.error(error)
-      })
+  const handleGoogleSignIn = async () => {
+    setModalVisible(false)
+    await googleSignIn()
   }
 
   useEffect(() => {
@@ -79,62 +67,30 @@ const Login = ({ navigation }) => {
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     })
     if (!isLoading) {
-      if (error == null) {
-        navigation.navigate('HomeTabs')
-      } else {
+      if (error != null) {
         setModalVisible(true)
+      } else {
+        navigation.navigate('HomeTabs')
       }
     }
+
+    console.log('\nLoading:', isLoading, '\nError:', error)
   }, [isLoading, error])
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices()
-      const user = await GoogleSignin.signIn()
-      setUser(user)
-      console.log(user)
-      setError(null)
-      navigation.navigate('HomeTabs')
-    } catch (error) {
-      alert(error)
-    }
-  }
-
-  const handleSignOut = () => {
-    auth()
-      .signOut()
-      .then(() => {
-        setUser(null)
-        console.log('User signed out!')
-      })
-      .catch(error => {
-        console.error(error)
-      })
-
-    GoogleSignin.signOut()
-      .then(() => {
-        setUser(null)
-        console.log('Google sign out')
-      })
-      .catch(error => {
-        console.log(error)
-      })
-  }
   return (
     <KeyboardAvoidingWrapper>
       <StyledContainer>
         <InnerContainer>
-          <PageLogo
-            resizeMode="cover"
-            source={require('./../assets/img/logo.png')}
-          ></PageLogo>
+          <VideoComponent
+            source={require('./../assets/video/greenLogin.mp4')}
+          />
           <PageTitle>Welcome!</PageTitle>
 
           <Formik
             initialValues={{ email: '', password: '' }}
             onSubmit={values => {
               console.log(values)
-              navigation.navigate('HomeTabs')
+              //navigation.navigate('HomeTabs')
             }}
           >
             {({ handleBlur, handleSubmit, values }) => (
@@ -175,7 +131,7 @@ const Login = ({ navigation }) => {
                     <ButtonText>Login</ButtonText>
                   </StyledButton>
 
-                  <StyledButton onPress={handleSignUp}>
+                  <StyledButton onPress={handleRegisterButton}>
                     <ButtonText>Register</ButtonText>
                   </StyledButton>
                 </View>

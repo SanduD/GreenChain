@@ -7,7 +7,10 @@ import Tabs from './tabs'
 import Wallet from '../pages/Wallet'
 import TransferScreen from '../pages/Transfer'
 import History from '../pages/History'
+import Register from '../pages/Register'
+import AuthLoadingScreen from '../pages/AuthLoadingScreen'
 import { Colors } from '../components/styles'
+
 const { primary, tertiary } = Colors
 
 const Stack = createNativeStackNavigator()
@@ -18,27 +21,25 @@ const RootStack = () => {
       <Stack.Navigator
         screenOptions={{
           cardStyle: { backgroundColor: primary },
-
           headerStyle: {
             backgroundColor: primary,
           },
-          headerLeft: () => null,
           headerTintColor: tertiary,
           headerTitle: '',
-          headerLeftContainerStyle: {
-            paddingLeft: 20,
-          },
         }}
-        initialRouteName="Login"
+        initialRouteName="AuthLoading"
       >
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen
-          options={{
-            headerShown: false,
-            headerLeft: () => null,
-          }}
+          name="AuthLoading"
+          component={AuthLoadingScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
           name="HomeTabs"
           component={Tabs}
+          options={{ headerShown: false }}
         />
         <Stack.Screen name="Wallet" component={Wallet} />
         <Stack.Screen name="History" component={History} />
