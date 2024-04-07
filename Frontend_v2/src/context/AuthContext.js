@@ -8,11 +8,12 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         userInfo: action.payload,
+        authChecked: true,
       }
-
     case 'LOGOUT':
-      return { ...state, userInfo: null }
-
+      return { ...state, userInfo: null, authChecked: true }
+    case 'AUTH_CHECKED':
+      return { ...state, authChecked: true }
     default:
       return state
   }
@@ -20,6 +21,7 @@ export const authReducer = (state, action) => {
 export const AuthContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, {
     userInfo: null,
+    authChecked: false,
   })
 
   useEffect(() => {
@@ -29,10 +31,13 @@ export const AuthContextProvider = ({ children }) => {
         const userInfo = JSON.parse(userJSON)
 
         if (userInfo) {
-          dispatch({ type: 'LOGIN', payload: { userInfo } })
+          dispatch({ type: 'LOGIN', payload: userInfo })
+        } else {
+          dispatch({ type: 'AUTH_CHECKED' })
         }
       } catch (error) {
         console.error('Failed to fetch userInfo from storage:', error)
+        dispatch({ type: 'AUTH_CHECKED' })
       }
     }
 

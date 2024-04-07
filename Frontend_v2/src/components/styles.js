@@ -100,8 +100,8 @@ export const StyledTextInput = styled.TextInput`
   border-radius: 5px;
   font-size: 16px;
   height: 60px;
-  margin-vertical: 3px;
-  margin-bottom: 10px;
+  /* margin-vertical: 3px; */
+  /* margin-bottom: 10px; */
   color: ${tertiary};
 `
 
@@ -117,15 +117,17 @@ export const LeftIcon = styled.View`
   z-index: 1;
 `
 export const RightIcon = styled.TouchableOpacity`
-  right: 15px;
+  right: 0px;
   top: 38px;
   position: absolute;
   z-index: 1;
+  width: 15%;
+  height: 100%;
 `
 
 export const StyledButton = styled.TouchableOpacity`
   padding: 15px;
-  background-color: ${secondary};
+  background-color: ${tertiary};
   justify-content: center;
   border-radius: 5px;
   margin-vertical: 5px;
@@ -134,7 +136,7 @@ export const StyledButton = styled.TouchableOpacity`
   align-items: center;
   margin-right: 5px;
   margin-left: 5px;
-
+  margin-top: 20px;
   ${props =>
     props.google == true &&
     `
@@ -142,7 +144,7 @@ export const StyledButton = styled.TouchableOpacity`
   flex-direction:row;
   justify-coontent:center;
   width:100%;
-  `}
+  `};
 `
 
 export const ButtonText = styled.Text`
