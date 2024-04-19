@@ -29,13 +29,17 @@ const RootStack = () => {
         }}
         initialRouteName="AuthLoading"
       >
-        <Stack.Screen
+        {/* <Stack.Screen
           name="AuthLoading"
           component={AuthLoadingScreen}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen name="Register" component={Register} /> */}
         <Stack.Screen
           name="HomeTabs"
           component={Tabs}

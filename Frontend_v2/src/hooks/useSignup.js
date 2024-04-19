@@ -16,6 +16,7 @@ export const useSignUp = () => {
   const reset = () => {
     setIsLoading(true)
     setError(null)
+    console.log('Resetting...')
   }
 
   const isValidEmail = email => {
