@@ -19,7 +19,7 @@ import {
 
 import KeyboardAvoidingWrapper from '../components/KeyboardAvoidingWrapper'
 import VideoComponent from '../components/videoComponent'
-import { useSignUp } from '../hooks/useSignUp'
+import { useSignUp } from '../hooks/useSignup'
 import InfoModal from '../components/InfoModal'
 import { useNavigation } from '@react-navigation/native'
 
@@ -45,10 +45,6 @@ const Register = () => {
       firstName: values.firstName,
       lastName: values.lastName,
     })
-    console.log('\nREGISTER DONE')
-  }
-
-  useEffect(() => {
     if (!isLoading) {
       if (error != null) {
         setModalVisible(true)
@@ -59,7 +55,9 @@ const Register = () => {
     }
 
     console.log('\nREGISTER\nLoading:', isLoading, '\nError:', error)
-  }, [isLoading, error])
+
+    console.log('\nREGISTER DONE')
+  }
 
   return (
     <KeyboardAvoidingWrapper>

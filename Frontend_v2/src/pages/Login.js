@@ -58,6 +58,15 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     setModalVisible(false)
     await googleSignIn()
+
+    if (!isLoading) {
+      if (error != null) {
+        setModalVisible(true)
+      } else {
+        navigation.navigate('HomeTabs')
+      }
+    }
+    console.log('\nLoading:', isLoading, '\nError:', error)
   }
 
   useEffect(() => {
@@ -66,13 +75,13 @@ const Login = () => {
         '930675864297-lktl7hananjjjbfob2mo7m8pjma5m3ir.apps.googleusercontent.com',
       scopes: ['https://www.googleapis.com/auth/drive.readonly'],
     })
-    if (!isLoading) {
-      if (error != null) {
-        setModalVisible(true)
-      } else {
-        navigation.navigate('HomeTabs')
-      }
-    }
+    // if (!isLoading) {
+    //   if (error != null) {
+    //     setModalVisible(true)
+    //   } else {
+    //     navigation.navigate('HomeTabs')
+    //   }
+    // }
 
     console.log('\nLoading:', isLoading, '\nError:', error)
   }, [isLoading, error])

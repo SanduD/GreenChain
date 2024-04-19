@@ -80,9 +80,9 @@ const NotificationMenu = ({ isVisible, toggleMenu }) => {
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    width: 80,
-    height: 120,
+    width: 50,
     top: 5,
+    zIndex: 10,
   },
   profileIcon: {
     width: 30,
@@ -90,10 +90,10 @@ const styles = StyleSheet.create({
   },
   menuContainer: {
     position: 'absolute',
-    top: 40,
-    right: 10,
-    left: 0,
-    width: '230%',
+    top: 35,
+    right: 0,
+    left: -140,
+    width: 220,
     backgroundColor: COLORS.white,
     borderRadius: 5,
     padding: 5,
@@ -102,15 +102,14 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    maxHeight: 'auto',
     zIndex: 1000,
   },
   menuItem: {
     flexDirection: 'row',
-    paddingVertical: 10,
-    paddingHorizontal: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 5,
     alignItems: 'center',
-    minWidth: 200,
+    width: '100%',
   },
   menuIcon: {
     width: 20,
@@ -118,8 +117,9 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   menuText: {
-    fontSize: 16,
+    fontSize: 12,
+    flexWrap: 'wrap',
+    flex: 1,
   },
 })
-
 export default NotificationMenu

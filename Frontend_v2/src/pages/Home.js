@@ -1,312 +1,80 @@
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {
   SafeAreaView,
   View,
-  Text,
   Image,
   FlatList,
-  TouchableOpacity,
-  Alert,
+  ScrollView,
+  StyleSheet,
 } from 'react-native'
-import { Colors, SubTitle } from '../components/styles'
-import { COLORS, SIZES, FONTS, icons, images } from '../constants'
-import ProfileMenu from '../components/ProfileMenu'
-import NotificationMenu from '../components/NotificationMenu'
-
-import { useAuthContext } from '../hooks/useAuthContext'
+import { COLORS, SIZES, images } from '../constants'
+import Header from '../components/Header'
+import Features from '../components/Features'
+import Schedule from '../components/Schedule'
+import VideoComponent from '../components/videoComponent'
 
 const Home = ({ navigation }) => {
-  const featuresData = [
-    {
-      id: 1,
-      icon: icons.reload,
-      color: COLORS.purple,
-      backgroundColor: COLORS.lightpurple,
-      description: 'Istoric',
-    },
-    {
-      id: 2,
-      icon: icons.send,
-      color: COLORS.yellow,
-      backgroundColor: COLORS.lightyellow,
-      description: 'Transfer',
-    },
-
-    {
-      id: 3,
-      icon: icons.wallet,
-      color: COLORS.red,
-      backgroundColor: COLORS.lightRed,
-      description: 'Portofel',
-    },
-    {
-      id: 4,
-      icon: icons.bill,
-      color: COLORS.yellow,
-      backgroundColor: COLORS.lightyellow,
-      description: 'Facturi',
-    },
-    {
-      id: 5,
-      icon: icons.more,
-      color: COLORS.purple,
-      backgroundColor: COLORS.lightpurple,
-      description: 'More',
-    },
-  ]
-
-  const specialPromoData = [
-    {
-      id: 1,
-      img: images.promoBanner,
-      title: 'Oferta 1',
-      description: "Don't miss it!",
-    },
-    {
-      id: 2,
-      img: images.promoBanner,
-      title: 'Oferta 2',
-      description: "Don't miss it!",
-    },
-    {
-      id: 3,
-      img: images.promoBanner,
-      title: 'Oferta 3',
-      description: "Don't miss it. Grab it now!",
-    },
-    {
-      id: 4,
-      img: images.promoBanner,
-      title: 'Oferta 4',
-      description: "Don't miss it",
-    },
-  ]
-
-  const { userInfo } = useAuthContext()
-
-  const welcomeMessage =
-    userInfo && userInfo.user ? 'Hello, ' + userInfo.user.name + '!' : 'Hello!'
-
-  const [features, setFeatures] = useState(featuresData)
-  const [specialPromos, setSpecialPromos] = useState(specialPromoData)
-
-  const [isProfileMenuVisible, setIsProfileMenuVisible] = useState(false)
-  const [isNotificationMenuVisible, setIsNotificationMenuVisible] =
-    useState(false)
-
-  const toggleProfileMenu = () => {
-    setIsProfileMenuVisible(!isProfileMenuVisible)
-    if (isNotificationMenuVisible) setIsNotificationMenuVisible(false)
-  }
-
-  const toggleNotificationMenu = () => {
-    setIsNotificationMenuVisible(!isNotificationMenuVisible)
-    if (isProfileMenuVisible) setIsProfileMenuVisible(false)
-  }
-  function renderHeader() {
-    return (
-      <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
-        <View style={{ flex: 1 }}>
-          <SubTitle>{welcomeMessage}</SubTitle>
-        </View>
-
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <NotificationMenu
-            isVisible={isNotificationMenuVisible}
-            toggleMenu={toggleNotificationMenu}
-          />
-          <ProfileMenu
-            isVisible={isProfileMenuVisible}
-            toggleMenu={toggleProfileMenu}
-            navigation={navigation}
-          />
-        </View>
-      </View>
-    )
-  }
-
   function renderBanner() {
     return (
-      <View
-        style={{
-          height: 300,
-          borderRadius: 20,
-          marginTop: '-15%',
-        }}
-      >
+      <View style={styles.bannerContainer}>
         <Image
-          source={images.banner}
+          source={require('../assets/images/banner.jpg')}
           resizeMode="cover"
-          style={{
-            width: '100%',
-            height: '100%',
-            borderRadius: 20,
-          }}
+          style={styles.banner}
         />
       </View>
     )
   }
 
-  function renderFeatures() {
-    const Header = () => (
-      <View style={{ marginBottom: SIZES.padding * 2 }}>
-        <SubTitle>Comenzi Rapide</SubTitle>
-      </View>
-    )
-
-    const renderItem = ({ item }) => (
-      <TouchableOpacity
-        style={{
-          marginBottom: SIZES.padding * 2,
-          width: 60,
-          alignItems: 'center',
-        }}
-        onPress={() => {
-          if (item.description === 'Portofel') {
-            navigation.navigate('Wallet')
-          } else if (item.description === 'Istoric') {
-            navigation.navigate('History')
-          } else if (item.description === 'Transfer') {
-            navigation.navigate('TransferScreen')
-          } else {
-            console.log(item.description)
-          }
-        }}
-      >
-        <View
-          style={{
-            height: 50,
-            width: 50,
-            marginBottom: 5,
-            borderRadius: 20,
-            backgroundColor: item.backgroundColor,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-        >
-          <Image
-            source={item.icon}
-            resizeMode="contain"
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: item.color,
-            }}
-          />
-        </View>
-        <Text
-          style={{
-            textAlign: 'center',
-            flexWrap: 'wrap',
-            ...FONTS.body4,
-            color: Colors.primary,
-          }}
-        >
-          {item.description}
-        </Text>
-      </TouchableOpacity>
-    )
-
+  function HeaderComponent() {
     return (
-      <FlatList
-        ListHeaderComponent={Header}
-        data={features}
-        numColumns={4}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        keyExtractor={item => `${item.id}`}
-        renderItem={renderItem}
-        style={{ marginTop: SIZES.padding * 2 }}
-      />
-    )
-  }
-
-  function renderComponents() {
-    const HeaderComponent = () => (
       <View>
-        {renderHeader()}
-        {renderBanner()}
-        {renderFeatures()}
+        <Header navigation={navigation} />
+        <Schedule />
+        <VideoComponent
+          source={require('../assets/video/animatedHomeScreen.mp4')}
+          videoStyle={styles.homeVideo}
+        />
+        <Features navigation={navigation} />
       </View>
-    )
-
-    const renderPromoHeader = () => (
-      <View
-        style={{
-          flexDirection: 'row',
-          marginBottom: SIZES.padding,
-        }}
-      >
-        <View style={{ flex: 1 }}>
-          <Text style={{ ...FONTS.h3 }}>Promotii</Text>
-        </View>
-        <TouchableOpacity onPress={() => console.log('View All')}>
-          <Text style={{ color: COLORS.gray, ...FONTS.body4 }}>View All</Text>
-        </TouchableOpacity>
-      </View>
-    )
-
-    const renderItem = ({ item }) => (
-      <TouchableOpacity
-        style={{
-          marginVertical: SIZES.base,
-          width: SIZES.width / 2.5,
-        }}
-        onPress={() => console.log(item.title)}
-      >
-        <View
-          style={{
-            height: 80,
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20,
-            backgroundColor: COLORS.primary,
-          }}
-        >
-          <Image
-            source={images.promoBanner}
-            resizeMode="cover"
-            style={{
-              width: '100%',
-              height: '100%',
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20,
-            }}
-          />
-        </View>
-
-        <View
-          style={{
-            padding: SIZES.padding,
-            backgroundColor: COLORS.lightGray,
-            borderBottomLeftRadius: 20,
-            borderBottomRightRadius: 20,
-          }}
-        >
-          <Text style={{ ...FONTS.h4 }}>{item.title}</Text>
-          <Text style={{ ...FONTS.body4 }}>{item.description}</Text>
-        </View>
-      </TouchableOpacity>
-    )
-
-    return (
-      <FlatList
-        ListHeaderComponent={HeaderComponent}
-        contentContainerStyle={{ paddingHorizontal: SIZES.padding * 3 }}
-        numColumns={2}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        // data={specialPromos}
-        keyExtractor={item => `${item.id}`}
-        //renderItem={renderItem}
-        showsVerticalScrollIndicator={false}
-        ListFooterComponent={<View style={{ marginBottom: 80 }}></View>}
-      />
     )
   }
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.white }}>
-      {renderComponents()}
+    <SafeAreaView style={styles.safeArea}>
+      <FlatList
+        ListHeaderComponent={HeaderComponent}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+      />
     </SafeAreaView>
   )
 }
 
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS.lightGreen,
+  },
+  contentContainer: {
+    paddingHorizontal: SIZES.padding * 3,
+  },
+  bannerContainer: {
+    height: 300,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginTop: '-15%',
+  },
+  banner: {
+    width: '100%',
+    height: '100%',
+  },
+  homeVideo: {
+    width: 300,
+    height: 300,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginTop: SIZES.padding * 2,
+  },
+})
 export default Home
