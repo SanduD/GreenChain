@@ -8,6 +8,7 @@ import Svg, { Path } from 'react-native-svg'
 
 import Home from '../pages/Home'
 import Scan from '../pages/Scan'
+import Location from '../pages/Location'
 import { COLORS, icons } from '../constants'
 
 const Tab = createBottomTabNavigator()
@@ -137,7 +138,7 @@ const Tabs = () => {
       />
       <Tab.Screen
         name="User"
-        component={Home}
+        component={Location}
         options={{
           tabBarIcon: ({ focused }) => (
             <Image
