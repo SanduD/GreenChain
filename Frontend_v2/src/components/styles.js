@@ -62,7 +62,7 @@ export const PageTitle = styled.Text`
   font-size: 30px;
   text-align: center;
   font-weight: bold;
-  color: ${brand};
+  color: ${primary};
   padding: 10px;
 
   ${props =>

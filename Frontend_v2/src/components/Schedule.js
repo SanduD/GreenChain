@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.primary,
   },
   itemWeekday: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: '500',
     color: '#737373',
     marginBottom: 4,

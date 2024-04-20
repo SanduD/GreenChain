@@ -20,6 +20,8 @@ const wallet = require('../assets/icons/wallet.png')
 const exit = require('../assets/icons/exit.png')
 const becomeGreener = require('../assets/img/becomeGreener.png')
 const location = require('../assets/icons/location.png')
+const recycleCenter = require('../assets/icons/recyclingCenter.png')
+
 export default {
   backimage,
   bell,
@@ -43,4 +45,5 @@ export default {
   exit,
   becomeGreener,
   location,
+  recycleCenter,
 }
