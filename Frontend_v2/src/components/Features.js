@@ -2,42 +2,36 @@ import React from 'react'
 import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
 import { COLORS, SIZES, FONTS, icons } from '../constants'
 import { Colors, SubTitle } from './styles'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 const featuresData = [
   {
     id: 1,
     icon: icons.reload,
-    color: COLORS.purple,
-    backgroundColor: COLORS.lightpurple,
-    description: 'Istoric',
+    color: COLORS.red,
+    backgroundColor: Colors.tertiary,
+    description: 'History',
   },
   {
     id: 2,
     icon: icons.send,
-    color: COLORS.yellow,
-    backgroundColor: COLORS.lightyellow,
-    description: 'Transfer',
+    color: COLORS.primary,
+    backgroundColor: Colors.tertiary,
+    description: 'Tickets',
   },
   {
     id: 3,
     icon: icons.wallet,
-    color: COLORS.red,
-    backgroundColor: COLORS.lightRed,
-    description: 'Portofel',
+    color: Colors.quaternary,
+    backgroundColor: Colors.tertiary,
+    description: 'Wallet',
   },
   {
     id: 4,
     icon: icons.bill,
     color: COLORS.yellow,
-    backgroundColor: COLORS.lightyellow,
-    description: 'Facturi',
-  },
-  {
-    id: 5,
-    icon: icons.more,
-    color: COLORS.purple,
-    backgroundColor: COLORS.lightpurple,
-    description: 'More',
+    backgroundColor: Colors.tertiary,
+    description: 'Bills',
   },
 ]
 

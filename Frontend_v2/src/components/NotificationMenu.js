@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
     width: 50,
-    top: 5,
+    top: 0,
     zIndex: 10,
   },
   profileIcon: {
