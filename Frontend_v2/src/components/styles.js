@@ -79,6 +79,7 @@ export const SubTitle = styled.Text`
   font-weight: bold;
   color: ${primary};
   padding: 10px;
+  margin-top: 15px;
 
   ${props =>
     props.welcome &&

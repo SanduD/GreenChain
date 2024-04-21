@@ -101,7 +101,7 @@ const Tabs = () => {
       tabBar={props => <CustomTabBar props={props} />}
     >
       <Tab.Screen
-        name="Home"
+        name="HomePage"
         component={Home}
         options={{
           tabBarIcon: ({ focused }) => (

@@ -1,9 +1,10 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { View, TouchableOpacity, Text, StyleSheet } from 'react-native'
 import { useAuthContext } from '../hooks/useAuthContext'
-import { SubTitle } from './styles'
+import { Colors, SubTitle } from './styles'
 import NotificationMenu from './NotificationMenu'
 import { SIZES } from '../constants'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const Header = ({ navigation }) => {
   const { userInfo } = useAuthContext()
@@ -23,12 +24,18 @@ const Header = ({ navigation }) => {
     }
   }
 
+  const openDrawer = () => {
+    navigation.openDrawer()
+  }
+
   return (
-    <View style={{ flexDirection: 'row', marginVertical: SIZES.padding * 2 }}>
+    <View style={styles.headerContainer}>
+      <TouchableOpacity onPress={openDrawer} style={styles.menuButton}>
+        <Icon name="bars" size={24} color={Colors.primary} />
+      </TouchableOpacity>
       <View style={{ flex: 1 }}>
         <SubTitle>{welcomeMessage}</SubTitle>
       </View>
-
       <NotificationMenu
         isVisible={isNotificationMenuVisible}
         toggleMenu={toggleNotificationMenu}
@@ -36,5 +43,16 @@ const Header = ({ navigation }) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    marginBottom: SIZES.padding * 2,
+    alignItems: 'center',
+  },
+  menuButton: {
+    marginRight: 20,
+  },
+})
 
 export default Header
