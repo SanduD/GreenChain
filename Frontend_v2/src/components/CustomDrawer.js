@@ -15,6 +15,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Colors } from './styles'
 import { COLORS } from '../constants'
+import ShareButton from './shareButton'
 
 const CustomDrawer = props => {
   return (
@@ -80,32 +81,13 @@ const CustomDrawer = props => {
           backgroundColor: COLORS.lightGreen,
         }}
       >
-        <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
-          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-            <Ionicons
-              name="share-social-outline"
-              size={22}
-              color={COLORS.secondary}
-            />
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: 'Roboto-Medium',
-                marginLeft: 5,
-                color: COLORS.secondary,
-              }}
-            >
-              Tell a Friend
-            </Text>
-          </View>
-        </TouchableOpacity>
+        <ShareButton />
         <TouchableOpacity onPress={() => {}} style={{ paddingVertical: 15 }}>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Ionicons name="exit-outline" size={22} color={COLORS.secondary} />
             <Text
               style={{
                 fontSize: 15,
-                fontFamily: 'Roboto-Medium',
                 marginLeft: 5,
                 color: COLORS.secondary,
               }}

@@ -21,7 +21,12 @@ const exit = require('../assets/icons/exit.png')
 const becomeGreener = require('../assets/img/becomeGreener.png')
 const location = require('../assets/icons/location.png')
 const recycleCenter = require('../assets/icons/recyclingCenter.png')
-
+const ticket = require('../assets/icons/ticket.png')
+const bottle = require('../assets/icons/bottle.png')
+const energy = require('../assets/icons/energy.png')
+const carbon = require('../assets/icons/carbon.png')
+const bill_colored = require('../assets/icons/bill_colored.png')
+const ticket_colored = require('../assets/icons/ticket_colored.png')
 export default {
   backimage,
   bell,
@@ -46,4 +51,10 @@ export default {
   becomeGreener,
   location,
   recycleCenter,
+  ticket,
+  bottle,
+  energy,
+  carbon,
+  bill_colored,
+  ticket_colored,
 }

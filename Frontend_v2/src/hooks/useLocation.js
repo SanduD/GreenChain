@@ -76,72 +76,72 @@ const useLocation = () => {
     {
       latitude: 44.40970993041992,
       longitude: 26.080162048339844,
-      name: 'Punct de colectare 1',
+      name: 'Collection point 1',
     },
     {
       latitude: 44.40710414176723,
       longitude: 26.077537456393884,
-      name: 'Punct de colectare 2',
+      name: 'Collection point 2',
     },
     {
       latitude: 44.41822507632575,
       longitude: 26.073073069370135,
-      name: 'Punct de colectare 3',
+      name: 'Collection point 3',
     },
     {
       latitude: 44.420516947679054,
       longitude: 26.075248088686465,
-      name: 'Punct de colectare 4',
+      name: 'Collection point 4',
     },
     {
       latitude: 44.39967049385718,
       longitude: 26.071214046680627,
-      name: 'Punct de colectare 5',
+      name: 'Collection point 5',
     },
     {
       latitude: 44.392311147944284,
       longitude: 26.080912913630836,
-      name: 'Punct de colectare 6',
+      name: 'Collection point 6',
     },
     {
       latitude: 44.402491331089244,
       longitude: 26.0563653377167,
-      name: 'Punct de colectare 7',
+      name: 'Collection point 7',
     },
     {
       latitude: 44.42554350980861,
       longitude: 26.064433421540834,
-      name: 'Punct de colectare 8',
+      name: 'Collection point 8',
     },
     {
       latitude: 44.43559533743456,
       longitude: 26.043319073683353,
-      name: 'Punct de colectare 9',
+      name: 'Collection point 9',
     },
     {
       latitude: 44.418801743719435,
       longitude: 26.139779196362234,
-      name: 'Punct de colectare 10',
+      name: 'Collection point 10',
     },
     {
       latitude: 44.410306236244324,
       longitude: 26.149604308015565,
-      name: 'Punct de colectare 11',
+      name: 'Collection point 11',
     },
     {
       latitude: 44.39183348393547,
       longitude: 26.123490195463283,
-      name: 'Punct de colectare 12',
+      name: 'Collection point 12',
     },
     {
       latitude: 44.384442749897694,
       longitude: 26.15451686384223,
-      name: 'Punct de colectare 13',
+      name: 'Collection point 13',
     },
     {
       latitude: 44.38924683317412,
       longitude: 26.093239193793814,
-      name: 'Punct de colectare 14',
+      name: 'Collection point 14',
     },
   ]
 

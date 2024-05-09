@@ -7,31 +7,30 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 const featuresData = [
   {
     id: 1,
+    icon: icons.ticket_colored,
+    backgroundColor: Colors.tertiary,
+    description: 'Tickets',
+  },
+  {
+    id: 2,
+    icon: icons.bill,
+    color: COLORS.emerald,
+    backgroundColor: Colors.tertiary,
+    description: 'Bills',
+  },
+  {
+    id: 3,
     icon: icons.reload,
     color: COLORS.red,
     backgroundColor: Colors.tertiary,
     description: 'History',
   },
   {
-    id: 2,
-    icon: icons.send,
-    color: COLORS.primary,
-    backgroundColor: Colors.tertiary,
-    description: 'Tickets',
-  },
-  {
-    id: 3,
+    id: 4,
     icon: icons.wallet,
     color: Colors.quaternary,
     backgroundColor: Colors.tertiary,
     description: 'Wallet',
-  },
-  {
-    id: 4,
-    icon: icons.bill,
-    color: COLORS.yellow,
-    backgroundColor: Colors.tertiary,
-    description: 'Bills',
   },
 ]
 
@@ -44,12 +43,14 @@ const Features = ({ navigation }) => {
         alignItems: 'center',
       }}
       onPress={() => {
-        if (item.description === 'Portofel') {
+        if (item.description === 'Wallet') {
           navigation.navigate('Wallet')
-        } else if (item.description === 'Istoric') {
+        } else if (item.description === 'History') {
           navigation.navigate('History')
-        } else if (item.description === 'Transfer') {
-          navigation.navigate('TransferScreen')
+        } else if (item.description === 'Tickets') {
+          navigation.navigate('TicketScreen')
+        } else if (item.description === 'Bills') {
+          navigation.navigate('BillScreen')
         } else {
           console.log(item.description)
         }
@@ -57,8 +58,8 @@ const Features = ({ navigation }) => {
     >
       <View
         style={{
-          height: 50,
-          width: 50,
+          height: 60,
+          width: 60,
           marginBottom: 5,
           borderRadius: 20,
           backgroundColor: item.backgroundColor,
@@ -70,8 +71,8 @@ const Features = ({ navigation }) => {
           source={item.icon}
           resizeMode="contain"
           style={{
-            height: 20,
-            width: 20,
+            height: 25,
+            width: 25,
             tintColor: item.color,
           }}
         />
@@ -91,7 +92,7 @@ const Features = ({ navigation }) => {
 
   return (
     <FlatList
-      ListHeaderComponent={<SubTitle>Comenzi Rapide</SubTitle>}
+      ListHeaderComponent={<SubTitle>Quick Actions</SubTitle>}
       data={featuresData}
       numColumns={4}
       columnWrapperStyle={{ justifyContent: 'space-between' }}
