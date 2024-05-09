@@ -26,6 +26,7 @@ import {
   useCodeScanner,
   useCameraPermission,
 } from 'react-native-vision-camera'
+import InfoModal from '../components/InfoModal'
 
 // const Scan = ({ navigation }) => {};
 
@@ -127,35 +128,6 @@ const Scan = ({ navigation }) => {
     setModalVisible(false)
   }
 
-  const InfoModal = ({ isVisible, onClose }) => (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={isVisible}
-      onRequestClose={onClose}
-    >
-      <TouchableOpacity
-        style={styles.overlayModal}
-        activeOpacity={1}
-        onPress={onClose}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              Folosește camera pentru a scana rapid codul de bare al PET-ului
-              sau introdu manual codul dacă eticheta este deteriorată.
-              Asigură-te că PET-ul este bine iluminat și că întregul cod de bare
-              este vizibil în cadru pentru a facilita scanarea corectă.
-            </Text>
-            <TouchableOpacity style={styles.openButton} onPress={onClose}>
-              <Text style={styles.textStyle}>Am înțeles</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      </TouchableOpacity>
-    </Modal>
-  )
-
   function renderHeader() {
     return (
       <View
@@ -167,24 +139,6 @@ const Scan = ({ navigation }) => {
           backgroundColor: COLORS.transparent,
         }}
       >
-        <TouchableOpacity
-          style={{
-            width: 45,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}
-          onPress={() => navigation.navigate('Home')}
-        >
-          <Image
-            source={icons.close}
-            style={{
-              height: 20,
-              width: 20,
-              tintColor: COLORS.green,
-            }}
-          />
-        </TouchableOpacity>
-
         <View
           style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
         >
@@ -202,8 +156,12 @@ const Scan = ({ navigation }) => {
           }}
           onPress={handlePressInfo}
         >
-          <InfoModal isVisible={modalVisible} onClose={handleCloseModal} />
-
+          <InfoModal
+            isVisible={modalVisible}
+            onClose={handleCloseModal}
+            content={` Use the  📷  to quickly scan the PET's barcode or enter the code manually if the label is damaged.
+  ♻️`}
+          />
           <Image
             source={icons.info}
             style={{

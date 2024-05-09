@@ -18,7 +18,7 @@ const InfoModal = ({ isVisible, onClose, content }) => (
         <View style={styles.modalView}>
           <Text style={styles.modalText}>{content}</Text>
           <TouchableOpacity style={styles.openButton} onPress={onClose}>
-            <Text style={styles.textStyle}>Am înțeles</Text>
+            <Text style={styles.textStyle}>Got it👌</Text>
           </TouchableOpacity>
         </View>
       </View>

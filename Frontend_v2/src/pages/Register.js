@@ -129,7 +129,10 @@ const Register = () => {
                     alignItems: 'center',
                   }}
                 >
-                  <StyledButton onPress={handleSubmit}>
+                  <StyledButton
+                    onPress={handleSubmit}
+                    style={{ marginTop: 40, marginBottom: 40 }}
+                  >
                     <ButtonText>Register</ButtonText>
                   </StyledButton>
                   <InfoModal
@@ -175,10 +178,4 @@ const MyTextInput = ({
   )
 }
 
-const styles = StyleSheet.create({
-  pageLogo: {
-    width: 250,
-    height: 200,
-  },
-})
 export default Register

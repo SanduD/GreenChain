@@ -1,12 +1,13 @@
 import * as React from 'react'
 import { createDrawerNavigator } from '@react-navigation/drawer'
 import ProfileScreen from '../pages/Profile'
-import LogoutScreen from '../pages/Logout'
+import Setting from '../pages/Setting'
 import Tabs from './tabs'
 import { Colors } from '../components/styles'
 import CustomDrawer from '../components/CustomDrawer'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { COLORS } from '../constants'
+import Wallet from '../pages/Wallet'
 
 const Drawer = createDrawerNavigator()
 
@@ -45,22 +46,22 @@ const DrawerNavigator = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Settings"
-        component={LogoutScreen}
-        options={{
-          drawerIcon: ({ color }) => (
-            <Ionicons name="settings-outline" size={22} color={color} />
-          ),
-        }}
-      />
 
       <Drawer.Screen
         name="Wallet"
-        component={LogoutScreen}
+        component={Wallet}
         options={{
           drawerIcon: ({ color }) => (
             <Ionicons name="wallet" size={22} color={color} />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Settings"
+        component={Setting}
+        options={{
+          drawerIcon: ({ color }) => (
+            <Ionicons name="settings-outline" size={22} color={color} />
           ),
         }}
       />

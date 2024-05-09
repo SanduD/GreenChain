@@ -57,7 +57,7 @@ export default function Location() {
 
   return (
     <View style={styles.container}>
-      <PageTitle>Locații de colectare</PageTitle>
+      <PageTitle>Collection locations</PageTitle>
       <MapView
         style={styles.map}
         initialRegion={INITIAL_REGION}

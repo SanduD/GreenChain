@@ -28,7 +28,7 @@ export const InnerContainer = styled.View`
   width: 100%;
   align-items: center;
   justify-content: flex-start;
-  padding-top: 0px;
+  padding-top: 10px;
 `
 
 export const WelcomeContainer = styled(InnerContainer)`
