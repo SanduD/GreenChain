@@ -35,6 +35,7 @@ const Scan = ({ navigation }) => {
   const [barcodeValue, setBarcodeValue] = useState('')
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
+  const [validated, setValidated] = useState(0)
   const [lastScannedCode, setLastScannedCode] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
 
@@ -105,19 +106,6 @@ const Scan = ({ navigation }) => {
     setScanned(true)
     //setText(data);
     fetchProductData(data)
-  }
-
-  const showInfoAlert = () => {
-    Alert.alert(
-      'Ajutor Scanare',
-      'Folosește camera pentru a scana rapid codul de bare al PET-ului sau introdu manual codul dacă eticheta este deteriorată. Asigură-te că PET-ul este bine iluminat și că întregul cod de bare este vizibil în cadru pentru a facilita scanarea corectă.',
-      [
-        {
-          text: 'Am înțeles',
-          onPress: () => console.log('Butonul Am înțeles a fost apăsat'),
-        },
-      ]
-    )
   }
 
   const handlePressInfo = () => {
@@ -204,8 +192,16 @@ const Scan = ({ navigation }) => {
           </View>
         )}
 
-        <Text style={{ ...FONTS.h4 }}>Alte metode de scanat</Text>
-
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: '100%',
+          }}
+        >
+          <Text style={styles.textStyle}>Other Methods</Text>
+          <Text style={styles.textStyle}>Validated: {validated}</Text>
+        </View>
         <View
           style={{
             flex: 1,
@@ -279,16 +275,19 @@ const Scan = ({ navigation }) => {
                 alignItems: 'center',
               }}
             >
+              <Image
+                source={require('../assets/icons/no-camera.png')}
+                style={styles.imageStyle}
+              />
               <Text style={{ ...FONTS.h3, marginBottom: 10 }}>
                 No access to camera
               </Text>
-              <StyledButton
-                title={'Allow Camera'}
+              <TouchableOpacity
                 onPress={requestCameraPermission}
-              />
-              <View style={{ height: 230, justifyContent: 'flex-end' }}>
-                {renderOtherMethods()}
-              </View>
+                style={[styles.styledButton]}
+              >
+                <Text style={styles.buttonText}>Access Camera</Text>
+              </TouchableOpacity>
             </View>
             <View style={{ height: 230, justifyContent: 'flex-end' }}>
               {renderOtherMethods()}
@@ -305,14 +304,21 @@ const Scan = ({ navigation }) => {
                 alignItems: 'center',
               }}
             >
+              <Image
+                source={require('../assets/icons/camera.png')}
+                style={styles.imageStyle}
+              />
               <Text
                 style={{ ...FONTS.h3, marginBottom: 10, color: Colors.primary }}
               >
                 Requesting for camera permission
               </Text>
-              <StyledButton onPress={requestCameraPermission}>
-                <ButtonText>Allow Camera</ButtonText>
-              </StyledButton>
+              <TouchableOpacity
+                onPress={requestCameraPermission}
+                style={[styles.styledButton]}
+              >
+                <Text style={styles.buttonText}>Access Camera</Text>
+              </TouchableOpacity>
             </View>
             <View style={{ height: 230, justifyContent: 'flex-end' }}>
               {renderOtherMethods()}
@@ -334,6 +340,11 @@ const Scan = ({ navigation }) => {
 }
 
 const styles = StyleSheet.create({
+  imageStyle: {
+    width: 100,
+    height: 100,
+    marginBottom: 20,
+  },
   overlayModal: {
     flex: 1,
     justifyContent: 'center',
@@ -344,32 +355,33 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: COLORS.green,
   },
-  cameraView: {
-    width: '90%',
-    top: 30,
-    height: '50%',
-    borderRadius: SIZES.radius,
-    overflow: 'hidden',
-  },
   cameraContainer: {
-    flex: 1,
+    width: '90%',
+    height: '70%',
+    top: 30,
+    borderRadius: 20,
+    overflow: 'hidden',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: COLORS.transparent,
+    marginTop: '20%',
+    marginLeft: '5%',
+  },
+  cameraView: {
+    width: '100%',
+    height: '100%',
   },
   overlay: {
-    ...StyleSheet.absoluteFillObject,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
   },
   frame: {
     width: 250,
-    top: 30,
     height: 250,
     borderWidth: 2,
-    borderColor: 'white',
+    borderColor: '#00FF00',
     borderRadius: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
   },
 
   buttonContainer: {
@@ -422,12 +434,35 @@ const styles = StyleSheet.create({
   textStyle: {
     color: 'white',
     fontWeight: 'bold',
-    textAlign: 'center',
+    // textAlign: 'center',
   },
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
     color: Colors.primary,
+  },
+
+  styledButton: {
+    padding: 15,
+    backgroundColor: Colors.secondary,
+    justifyContent: 'center',
+    borderRadius: 25,
+    marginVertical: 5,
+    height: 60,
+    width: '48%',
+    alignItems: 'center',
+    marginRight: 5,
+    marginLeft: 5,
+    marginTop: 20,
+  },
+  buttonText: {
+    fontSize: 18,
+    color: '#fff',
+  },
+  textStyle: {
+    fontSize: 18,
+    color: COLORS.primary,
+    paddingVertical: SIZES.base,
   },
 })
 
