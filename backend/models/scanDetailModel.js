@@ -1,11 +1,6 @@
 import mongoose from 'mongoose'
 
 const scanDetailSchema = new mongoose.Schema({
-  rewardId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Reward',
-    required: true,
-  },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -14,14 +9,18 @@ const scanDetailSchema = new mongoose.Schema({
   scanType: {
     type: String,
     required: true,
-    enum: ['PET', 'Ticket', 'Invoice'],
+    enum: ['Pet', 'Ticket', 'Bill'],
   },
   quantity: {
     type: Number,
     required: true,
     min: 0,
   },
-
+  rewardGRC: {
+    type: Number,
+    required: true,
+    min: 0,
+  },
   savedAtDate: {
     type: Date,
     required: true,

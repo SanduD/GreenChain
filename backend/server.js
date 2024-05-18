@@ -4,9 +4,9 @@ import dotenv from 'dotenv'
 import cors from 'cors'
 import homeRoute from './routes/homeRoute.js'
 import userRoute from './routes/userRoute.js'
-import rewardRoute from './routes/rewardRoute.js'
 import requireAuth from './middleware/requireAuth.js'
 import scanDetailRouter from './routes/scanDetailRoute.js'
+import { swaggerSpec, swaggerUi } from './swaggerConfig.js'
 
 dotenv.config()
 const app = express()
@@ -27,13 +27,13 @@ app.use(express.json())
 app.use(cors())
 
 //Routes
-app.use('/user', userRoute)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+
+app.use('/api/user', userRoute)
 
 //protected routes
-app.use(requireAuth)
-app.use('/', homeRoute)
-app.use('/reward', rewardRoute)
-
-app.use('/scandetail', scanDetailRouter)
+//app.use(requireAuth)
+app.use('/api', homeRoute)
+app.use('/api/scandetail', scanDetailRouter)
 
 //app.use('/auth',authRoute);
