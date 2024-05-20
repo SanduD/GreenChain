@@ -1,4 +1,3 @@
-// swaggerConfig.js
 import swaggerJsdoc from 'swagger-jsdoc'
 import swaggerUi from 'swagger-ui-express'
 
@@ -12,86 +11,191 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000', // URL-ul serverului tău
+        url: 'http://localhost:5000', // Your server URL
       },
     ],
     components: {
       schemas: {
         User: {
           type: 'object',
+          required: ['name', 'email', 'photo', 'fcmRegistrationToken'],
           properties: {
-            _id: {
+            id: {
               type: 'string',
-              description: 'User ID',
-              example: '60d0fe4f5311236168a109ca',
+              description: 'Unique identifier for the user',
             },
             name: {
               type: 'string',
               description: 'Name of the user',
-              example: 'John Doe',
             },
             email: {
               type: 'string',
               description: 'Email of the user',
-              example: 'user@example.com',
             },
             photo: {
               type: 'string',
               description: 'Photo URL of the user',
-              example: 'http://example.com/photo.jpg',
             },
             walletAddress: {
               type: 'string',
               description: 'Wallet address of the user',
-              example: '0x123456789abcdef',
+              nullable: true,
+            },
+            activeDays: {
+              type: 'array',
+              items: {
+                type: 'string',
+                format: 'date',
+              },
+              description: 'Array of active days',
             },
             createdAt: {
               type: 'string',
               format: 'date-time',
-              description: 'Creation date of the user',
-              example: '2021-06-22T15:29:17.000Z',
+              description: 'Date when the user was created',
             },
             fcmRegistrationToken: {
               type: 'string',
-              description: 'FCM registration token',
-              example: 'some_token',
+              description: 'FCM registration token for notifications',
             },
           },
         },
-        ScanDetail: {
+        Bottle: {
           type: 'object',
+          required: ['userId', 'quantity', 'rewardGRC'],
           properties: {
-            _id: {
+            id: {
               type: 'string',
-              description: 'Scan Detail ID',
-              example: '60d0fe4f5311236168a109cb',
+              description: 'Unique identifier for the bottle',
             },
             userId: {
               type: 'string',
-              description: 'User ID',
-              example: '60d0fe4f5311236168a109ca',
-            },
-            scanType: {
-              type: 'string',
-              description: 'Type of scan',
-              enum: ['PET', 'Ticket', 'Bill'],
-              example: 'PET',
+              description: 'User ID associated with the bottle',
             },
             quantity: {
               type: 'number',
-              description: 'Quantity of items scanned',
-              example: 1,
+              description: 'Quantity of bottles',
             },
             rewardGRC: {
               type: 'number',
               description: 'Reward in GRC',
-              example: 10,
             },
             savedAtDate: {
               type: 'string',
               format: 'date-time',
-              description: 'Date when the scan was saved',
-              example: '2021-06-22T15:29:17.000Z',
+              description: 'Date when the bottle was saved',
+            },
+          },
+        },
+        Bill: {
+          type: 'object',
+          required: ['userId', 'type', 'quantity', 'rewardGRC'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the bill',
+            },
+            userId: {
+              type: 'string',
+              description: 'User ID associated with the bill',
+            },
+            type: {
+              type: 'string',
+              description: 'Type of the bill (e.g., Engie_gas, EON_gas)',
+            },
+            quantity: {
+              type: 'number',
+              description: 'Quantity of the bill',
+            },
+            rewardGRC: {
+              type: 'number',
+              description: 'Reward in GRC',
+            },
+            barcode: {
+              type: 'string',
+              description: 'Barcode of the bill',
+              nullable: true,
+            },
+            savedAtDate: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Date when the bill was saved',
+            },
+          },
+        },
+        Ticket: {
+          type: 'object',
+          required: ['userId', 'rewardGRC', 'ticketCode'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the ticket',
+            },
+            userId: {
+              type: 'string',
+              description: 'User ID associated with the ticket',
+            },
+            rewardGRC: {
+              type: 'number',
+              description: 'Reward in GRC',
+            },
+            ticketCode: {
+              type: 'string',
+              description: 'Ticket code',
+            },
+            savedAtDate: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Date when the ticket was saved',
+            },
+          },
+        },
+        Notification: {
+          type: 'object',
+          required: ['userId', 'message'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the notification',
+            },
+            userId: {
+              type: 'string',
+              description: 'User ID associated with the notification',
+            },
+            message: {
+              type: 'string',
+              description: 'Notification message',
+            },
+            read: {
+              type: 'boolean',
+              description: 'Notification read status',
+              default: false,
+            },
+            createdAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Date when the notification was created',
+            },
+          },
+        },
+        Barcode: {
+          type: 'object',
+          required: ['barcode'],
+          properties: {
+            id: {
+              type: 'string',
+              description: 'Unique identifier for the barcode',
+            },
+            barcode: {
+              type: 'string',
+              description: 'Barcode value',
+              required: true,
+            },
+            scannedAt: {
+              type: 'string',
+              format: 'date-time',
+              description: 'Date when the barcode was scanned',
+              default: new Date().toISOString(),
             },
           },
         },

@@ -3,6 +3,9 @@ import {
   loginUser,
   registerUser,
   walletAuth,
+  addActiveDay,
+  getUserWalletBalance,
+  getUserTransactions,
 } from '../controllers/userController.js'
 
 const router = express.Router()
@@ -126,14 +129,132 @@ router.post('/register', registerUser)
  *             schema:
  *               type: object
  *               properties:
- *                 message:
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *                 jwt:
  *                   type: string
- *                   example: wallet connected!
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
  *       400:
  *         description: Bad request
  *       500:
  *         description: Internal server error
  */
 router.post('/wallet-auth', walletAuth)
+
+/**
+ * @swagger
+ * /api/users/activeDay:
+ *   post:
+ *     summary: Add an active day for a user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Active day added successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                 user:
+ *                   $ref: '#/components/schemas/User'
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Server error
+ */
+router.post('/activeDay', addActiveDay)
+
+/**
+ * @swagger
+ * /api/users/wallet-balance/{userId}:
+ *   get:
+ *     summary: Get wallet balance for a user
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Wallet balance retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 balance:
+ *                   type: number
+ *                   example: 1000
+ *       400:
+ *         description: Wallet address not provided
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/wallet-balance/:userId', getUserWalletBalance)
+
+/**
+ * @swagger
+ * /api/users/transactions/{userId}:
+ *   get:
+ *     tags: [Users]
+ *     summary: Get all transactions for a user
+ *     description: Retrieve all transactions for a specified user ID.
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: The ID of the user
+ *     responses:
+ *       200:
+ *         description: A list of transactions
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 transactions:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       blockNum:
+ *                         type: string
+ *                         description: Block number
+ *                       hash:
+ *                         type: string
+ *                         description: Transaction hash
+ *                       from:
+ *                         type: string
+ *                         description: Sender address
+ *                       to:
+ *                         type: string
+ *                         description: Receiver address
+ *                       value:
+ *                         type: string
+ *                         description: Value transferred
+ *                       asset:
+ *                         type: string
+ *                         description: Asset type (e.g., ETH, ERC20)
+ *                       category:
+ *                         type: string
+ *                         description: Transaction category
+ *       500:
+ *         description: Internal server error
+ */
+router.get('/transactions/:userId', getUserTransactions)
 
 export default router
