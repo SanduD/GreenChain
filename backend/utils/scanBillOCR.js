@@ -15,10 +15,10 @@ const extractDataFromBill = async (imagePath, type) => {
     let matches
 
     const patterns = {
-      Engie_gaz: /DATA SCADENTĂ\s*\n\s*(\d+,\d+)/,
-      EON_curent: /(\d+,\d+)\s*kWh/,
-      Hidroelectrica_curent: /(\d+,\d+)\s*kWh/,
-      Enel_curent: /Consum energie activă kWh (\d+)/,
+      Engie_gas: /DATA SCADENTĂ\s*\n\s*(\d{1,3}(?:,\d{3})*(?:,\d{2})?)/,
+      EON_gas: /(\d+,\d+)\s*kWh/,
+      Hidroelectrica_energy: /(\d+,\d+)\s*kWh/,
+      Enel_energy: /kWh (\d+)/,
     }
 
     if (patterns[type]) {
@@ -26,10 +26,19 @@ const extractDataFromBill = async (imagePath, type) => {
     }
 
     if (matches) {
-      console.log(`Cantitatea facturată este: ${matches[0]} kWh`)
+      console.log(`Quantity extracted: ${matches[0]} kWh`)
+      if (type === 'Engie_gas') {
+        matches[0] = matches[0].split('\n')[1]
+      }
+      if (type === 'EON_gas' || type === 'Hidroelectrica_energy') {
+        matches[0] = matches[0].split(' ')[0]
+      }
+      if (type === 'Enel_energy') {
+        matches[0] = matches[0].split(' ')[1]
+      }
       return matches[0]
     } else {
-      console.log('Cantitatea nu a putut fi găsită în textul extras.')
+      console.log('Can t find the quantity of kwh.')
       return null
     }
   } catch (error) {
@@ -37,9 +46,5 @@ const extractDataFromBill = async (imagePath, type) => {
     return null
   }
 }
-
-// Testarea funcției - comentează această parte în producție
-// const imagePath = path.join(__dirname, './extractData/EngieGaz.png')
-// extractDataFromBill(imagePath, 'Engie_gaz')
 
 export { extractDataFromBill }

@@ -24,14 +24,18 @@ const userSchema = new Schema({
     required: false,
     default: null,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
   fcmRegistrationToken: {
     type: String,
     required: true,
     default: null,
+  },
+  activeDays: {
+    type: [Date],
+    default: [],
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 })
 
