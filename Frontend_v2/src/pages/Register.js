@@ -23,41 +23,68 @@ import { useSignUp } from '../hooks/useSignup'
 import InfoModal from '../components/InfoModal'
 import { useNavigation } from '@react-navigation/native'
 
+import {
+  WalletConnectModal,
+  useWalletConnectModal,
+} from '@walletconnect/modal-react-native'
+import { useLogin } from '../hooks/useLogin'
+
+import { projectId, providerMetadata } from '../constants/config'
 const { brand, accent1 } = Colors
 
 const Register = () => {
+  const { isOpen, open, close, provider, isConnected, address } =
+    useWalletConnectModal()
+  const [walletAddress, setWalletAddress] = useState(null)
+
   const [isModalVisible, setModalVisible] = useState(false)
   const [hidePassword, setHidePassword] = useState(true)
   const navigation = useNavigation()
+  const [error, setError] = useState(null)
 
-  const { signUp, error, isLoading, reset } = useSignUp()
+  const { signUp } = useSignUp()
+  const { walletAuthForNewUser } = useLogin()
 
   const handleCloseModal = () => {
     setModalVisible(false)
-    reset()
   }
 
   const handleSignUp = async values => {
-    setModalVisible(false)
-    await signUp({
+    const [success, error] = await signUp({
       email: values.email,
       password: values.password,
       firstName: values.firstName,
       lastName: values.lastName,
     })
-    if (!isLoading) {
-      if (error != null) {
-        setModalVisible(true)
-      } else {
-        console.log(isLoading)
-        navigation.navigate('HomeTabs')
-      }
-    }
 
-    console.log('\nREGISTER\nLoading:', isLoading, '\nError:', error)
+    if (success) {
+      if (!walletAddress) {
+        await open()
+      }
+
+      if (walletAddress) {
+        const [successWalletAuth, errorWalletAuth] = await walletAuthForNewUser(
+          values.email,
+          walletAddress
+        )
+        if (!successWalletAuth) {
+          setError(errorWalletAuth)
+          setModalVisible(true)
+        } else navigation.navigate('Drawer')
+      }
+    } else {
+      setError(error)
+      setModalVisible(true)
+    }
 
     console.log('\nREGISTER DONE')
   }
+
+  useEffect(() => {
+    if (isConnected) {
+      setWalletAddress(address)
+    }
+  }, [isConnected])
 
   return (
     <KeyboardAvoidingWrapper>
@@ -144,6 +171,10 @@ const Register = () => {
               </StyledFormArea>
             )}
           </Formik>
+          <WalletConnectModal
+            projectId={projectId}
+            providerMetadata={providerMetadata}
+          />
         </InnerContainer>
       </StyledContainer>
     </KeyboardAvoidingWrapper>

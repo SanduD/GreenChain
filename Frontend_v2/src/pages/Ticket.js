@@ -1,23 +1,113 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  PermissionsAndroid,
+  Alert,
+} from 'react-native'
 import { COLORS } from '../constants'
 import { Colors } from '../components/styles'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import axios from 'axios'
+import { BASE_URL } from '../constants/config'
+import { useAuthContext } from '../hooks/useAuthContext'
+
+import { addActiveDay } from '../hooks/utils'
 
 const TicketScreen = () => {
-  const openCamera = () => {
+  const { userInfo, dispatch } = useAuthContext()
+  const [selectedImage, setSelectedImage] = useState(null)
+
+  const sendData = async () => {
+    if (!selectedImage) {
+      Alert.alert('No image selected', 'Please select an image before sending.')
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('userId', userInfo?.user._id)
+    formData.append('image', {
+      uri: selectedImage.uri,
+      type: selectedImage.type,
+      name: selectedImage.fileName,
+    })
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/tickets`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      console.log('Ticket sent:', response.data.savedTicket.rewardGRC)
+      await addActiveDay(userInfo.user._id, dispatch)
+      dispatch({ type: 'UPDATE_TICKETS_USED', payload: 1 })
+      dispatch({
+        type: 'UPDATE_BALANCE_GRC',
+        payload: response.data.savedTicket.rewardGRC,
+      })
+
+      Alert.alert(
+        'Success',
+        `Ticket is ok! You just received ${response.data.savedTicket.rewardGRC} GRC!`
+      )
+    } catch (error) {
+      if (error.response) {
+        Alert.alert(
+          'Error',
+          `An error occurred: ${error.response.data.message}`
+        )
+      } else if (error.request) {
+        Alert.alert('Error', 'No response received from the server.')
+      } else {
+        Alert.alert('Error', `An error occurred: ${error.message}`)
+      }
+    }
+  }
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Camera Permission',
+          message: 'GreenChain needs access to your camera to take photos.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      )
+      return granted === PermissionsAndroid.RESULTS.GRANTED
+    } catch (err) {
+      return false
+    }
+  }
+
+  const openCamera = async () => {
+    const hasPermission = await requestCameraPermission()
+    if (!hasPermission) {
+      Alert.alert(
+        'Camera Permission',
+        'Camera permission is required to take photos.'
+      )
+      return
+    }
+
     const options = {
       saveToPhotos: true,
       mediaType: 'photo',
     }
+
     launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker')
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage)
       } else {
-        const source = { uri: response.assets[0].uri }
-        // logică pentru a trimite imaginea la backend
+        const source = response.assets[0]
+        setSelectedImage(source)
         console.log(source)
       }
     })
@@ -34,10 +124,9 @@ const TicketScreen = () => {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage)
       } else {
-        const source = { uri: response.assets[0].uri }
+        const source = response.assets[0]
+        setSelectedImage(source)
         console.log(source)
-
-        // logică pentru a trimite imaginea la backend
       }
     })
   }
@@ -77,6 +166,10 @@ const TicketScreen = () => {
           />
           <Text style={styles.buttonText}>Select the ticket from Gallery</Text>
           <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.sendButton} onPress={sendData}>
+          <Text style={styles.sendButtonText}>Check ticket</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -143,6 +236,7 @@ const styles = StyleSheet.create({
     padding: 30,
     borderRadius: 30,
     width: '90%',
+    marginBottom: 20,
   },
   buttonText: {
     color: Colors.primary,
@@ -155,7 +249,6 @@ const styles = StyleSheet.create({
     color: Colors.primary,
     textAlign: 'center',
   },
-
   icon: {
     width: 20,
     height: 20,
@@ -174,13 +267,26 @@ const styles = StyleSheet.create({
   orContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 80,
+    marginBottom: 60,
   },
   line: {
     flex: 1,
     height: 1,
     backgroundColor: '#ccc',
     marginHorizontal: 30,
+  },
+  sendButton: {
+    backgroundColor: COLORS.primary,
+    padding: 20,
+    borderRadius: 25,
+    width: '50%',
+    alignSelf: 'center',
+  },
+  sendButtonText: {
+    color: Colors.primary,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 })
 export default TicketScreen

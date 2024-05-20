@@ -1,65 +1,89 @@
 import React, { useState, useEffect } from 'react'
 import { View, Text, FlatList, StyleSheet } from 'react-native'
+import { useAuthContext } from '../hooks/useAuthContext'
+import axios from 'axios'
+import { BASE_URL, AVERAGE_KWH } from '../constants/config'
 
 const History = () => {
+  const { userInfo } = useAuthContext()
   const [data, setData] = useState([])
+  const userId = userInfo?.user._id
 
   useEffect(() => {
     const fetchData = async () => {
-      const fakeData = [
-        {
-          id: '1',
+      try {
+        const billsResponse = await axios.get(`${BASE_URL}/api/bills/${userId}`)
+        const bottlesResponse = await axios.get(
+          `${BASE_URL}/api/bottles/${userId}`
+        )
+        const ticketsResponse = await axios.get(
+          `${BASE_URL}/api/tickets/${userId}`
+        )
+
+        const billsData = billsResponse.data.bills.map(bill => ({
+          id: bill._id,
+          scanType: 'Bill',
+          quantity:
+            AVERAGE_KWH - bill.quantity > 0 ? AVERAGE_KWH - bill.quantity : 0,
+          rewardGRC: bill.rewardGRC,
+          savedAtDate: bill.savedAtDate,
+        }))
+
+        const bottlesData = bottlesResponse.data.bottles.map(bottle => ({
+          id: bottle._id,
           scanType: 'PET',
-          quantity: 5,
-          rewardGRC: 20,
-          savedAtDate: new Date().toISOString(),
-        },
-        {
-          id: '2',
+          quantity: bottle.quantity,
+          rewardGRC: bottle.rewardGRC,
+          savedAtDate: bottle.savedAtDate,
+        }))
+
+        const ticketsData = ticketsResponse.data.tickets.map(ticket => ({
+          id: ticket._id,
           scanType: 'Ticket',
-          quantity: 3,
-          rewardGRC: 15,
-          savedAtDate: new Date().toISOString(),
-        },
-        {
-          id: '3',
-          scanType: 'Invoice',
           quantity: 1,
-          rewardGRC: 10,
-          savedAtDate: new Date().toISOString(),
-        },
-        {
-          id: '4',
-          scanType: 'Ticket',
-          quantity: 4,
-          rewardGRC: 11,
-          savedAtDate: new Date().toISOString(),
-        },
-        {
-          id: '5',
-          scanType: 'Invoice',
-          quantity: 1,
-          rewardGRC: 100,
-          savedAtDate: new Date().toISOString(),
-        },
-      ]
-      setData(fakeData)
+          rewardGRC: ticket.rewardGRC,
+          savedAtDate: ticket.savedAtDate,
+        }))
+
+        const combinedData = [...billsData, ...bottlesData, ...ticketsData]
+
+        setData(combinedData)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+      }
     }
 
     fetchData()
-  }, [])
+  }, [userId])
 
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text style={styles.itemTitle}>
-        {item.scanType} - {item.quantity} items
-      </Text>
-      <Text style={styles.itemSubtitle}>{item.rewardGRC} GRC</Text>
-      <Text style={styles.dateText}>
-        {new Date(item.savedAtDate).toLocaleDateString()}
-      </Text>
-    </View>
-  )
+  const renderItem = ({ item }) => {
+    let description
+
+    switch (item.scanType) {
+      case 'Bill':
+        description = `KWH Reduced: ${item.quantity}`
+        break
+      case 'PET':
+        description = `${item.quantity} Recycled`
+        break
+      case 'Ticket':
+        description = `${item.quantity} Ticket Used`
+        break
+      default:
+        description = `${item.quantity} items`
+    }
+
+    return (
+      <View style={styles.item}>
+        <Text style={styles.itemTitle}>{item.scanType}</Text>
+        <Text style={styles.itemSubtitle}>{item.rewardGRC} GRC</Text>
+        <Text style={styles.dateText}>
+          {new Date(item.savedAtDate).toLocaleDateString()}
+        </Text>
+        <Text style={styles.descriptionText}>{description}</Text>
+      </View>
+    )
+  }
 
   return (
     <View style={styles.container}>
@@ -101,6 +125,11 @@ const styles = StyleSheet.create({
   dateText: {
     fontSize: 12,
     color: '#aaa',
+    marginTop: 4,
+  },
+  descriptionText: {
+    fontSize: 14,
+    color: '#333',
     marginTop: 4,
   },
 })

@@ -1,24 +1,130 @@
-import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import React, { useState } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  PermissionsAndroid,
+  Alert,
+} from 'react-native'
+import { Picker } from '@react-native-picker/picker'
 import { COLORS } from '../constants'
 import { Colors } from '../components/styles'
 import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
+import { addActiveDay } from '../hooks/utils'
+import { useAuthContext } from '../hooks/useAuthContext'
+import axios from 'axios'
+import { BASE_URL, AVERAGE_KWH } from '../constants/config'
 
 const BillScreen = () => {
-  const openCamera = () => {
+  const { userInfo, dispatch } = useAuthContext()
+
+  const [selectedBillType, setSelectedBillType] = useState('')
+  const [selectedImage, setSelectedImage] = useState(null)
+
+  const sendData = async () => {
+    if (!selectedImage) {
+      Alert.alert('No image selected', 'Please select an image before sending.')
+      return
+    }
+
+    console.log('selectedBillType:', selectedBillType)
+    if (!selectedBillType) {
+      Alert.alert(
+        'No bill type selected',
+        'Please select a bill type before sending.'
+      )
+      return
+    }
+
+    const formData = new FormData()
+    formData.append('userId', userInfo?.user._id)
+    formData.append('type', selectedBillType)
+    formData.append('image', {
+      uri: selectedImage.uri,
+      type: selectedImage.type,
+      name: selectedImage.fileName,
+    })
+
+    try {
+      const response = await axios.post(`${BASE_URL}/api/bills`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      console.log('Bill sent:', response.data.savedBill.rewardGRC)
+      await addActiveDay(userInfo.user._id, dispatch)
+
+      const khw_reduced =
+        AVERAGE_KWH - parseInt(response.data.savedBill.quantity)
+      if (khw_reduced > 0)
+        dispatch({ type: 'UPDATE_KWH_REDUCED', payload: khw_reduced })
+
+      dispatch({
+        type: 'UPDATE_BALANCE_GRC',
+        payload: response.data.savedBill.rewardGRC,
+      })
+
+      Alert.alert(
+        'Success',
+        `Bill is ok! You just received ${response.data.savedBill.rewardGRC} GRC!`
+      )
+    } catch (error) {
+      if (error.response) {
+        Alert.alert(
+          'Error',
+          `An error occurred: ${error.response.data.message}`
+        )
+      } else if (error.request) {
+        Alert.alert('Error', 'No response received from the server.')
+      } else {
+        Alert.alert('Error', `An error occurred: ${error.message}`)
+      }
+    }
+  }
+
+  const requestCameraPermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.CAMERA,
+        {
+          title: 'Camera Permission',
+          message: 'GreenChain needs access to your camera to take photos.',
+          buttonNeutral: 'Ask Me Later',
+          buttonNegative: 'Cancel',
+          buttonPositive: 'OK',
+        }
+      )
+      return granted === PermissionsAndroid.RESULTS.GRANTED
+    } catch (err) {
+      return false
+    }
+  }
+
+  const openCamera = async () => {
+    const hasPermission = await requestCameraPermission()
+    if (!hasPermission) {
+      Alert.alert(
+        'Camera Permission',
+        'Camera permission is required to take photos.'
+      )
+      return
+    }
+
     const options = {
       saveToPhotos: true,
       mediaType: 'photo',
     }
+
     launchCamera(options, response => {
       if (response.didCancel) {
         console.log('User cancelled image picker')
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage)
       } else {
-        const source = { uri: response.assets[0].uri }
-        // logică pentru a trimite imaginea la backend
-        console.log(source)
+        const source = response.assets[0]
+        setSelectedImage(source)
       }
     })
   }
@@ -34,8 +140,8 @@ const BillScreen = () => {
       } else if (response.errorCode) {
         console.log('ImagePicker Error: ', response.errorMessage)
       } else {
-        const source = { uri: response.assets[0].uri }
-        console.log(source)
+        const source = response.assets[0]
+        setSelectedImage(source)
 
         // logică pentru a trimite imaginea la backend
       }
@@ -77,6 +183,26 @@ const BillScreen = () => {
           />
           <Text style={styles.buttonText}>Select the bill from Gallery</Text>
           <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+        </TouchableOpacity>
+
+        <Picker
+          selectedValue={selectedBillType}
+          style={styles.picker}
+          onValueChange={itemValue => setSelectedBillType(itemValue)}
+        >
+          <Picker.Item label="Select Bill Type" value="" />
+          <Picker.Item label="Gas - Engie" value="Engie_gas" />
+          <Picker.Item label="Gas - EON" value="EON_gas" />
+          {/* <Picker.Item label="Energy - EON" value="EON_energy" /> */}
+          <Picker.Item
+            label="Energy - Hidroelectrica"
+            value="Hidroelectrica_energy"
+          />
+          <Picker.Item label="Energy - Enel" value="Enel_energy" />
+        </Picker>
+
+        <TouchableOpacity style={styles.sendButton} onPress={sendData}>
+          <Text style={styles.sendButtonText}>Check Bill</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -164,18 +290,36 @@ const styles = StyleSheet.create({
   orText: {
     fontSize: 18,
     color: '#000',
-    marginVertical: 10,
+    // marginVertical: 10,
   },
   orContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 80,
+    marginBottom: 20,
   },
   line: {
     flex: 1,
     height: 1,
     backgroundColor: '#ccc',
     marginHorizontal: 30,
+  },
+  picker: {
+    width: '90%',
+    backgroundColor: COLORS.white,
+    marginVertical: 20,
+  },
+  sendButton: {
+    backgroundColor: COLORS.primary,
+    padding: 20,
+    borderRadius: 25,
+    width: '50%',
+    alignSelf: 'center',
+  },
+  sendButtonText: {
+    color: Colors.primary,
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16,
   },
 })
 export default BillScreen

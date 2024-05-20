@@ -27,33 +27,99 @@ import {
   useCameraPermission,
 } from 'react-native-vision-camera'
 import InfoModal from '../components/InfoModal'
+import { BASE_URL } from '../constants/config'
+import { useAuthContext } from '../hooks/useAuthContext'
+import { addActiveDay } from '../hooks/utils'
 
 // const Scan = ({ navigation }) => {};
 
 const Scan = ({ navigation }) => {
-  // const [hasPermission, setHasPermission] = useState(null);
+  const { userInfo, dispatch } = useAuthContext()
+
   const [barcodeValue, setBarcodeValue] = useState('')
   const [scanned, setScanned] = useState(false)
   const [text, setText] = useState('Not yet scanned')
   const [validated, setValidated] = useState(0)
-  const [lastScannedCode, setLastScannedCode] = useState('')
   const [modalVisible, setModalVisible] = useState(false)
+  const [modalContent, setModalContent] = useState('')
 
   const [hasPermission, setHasPermission] = useState(null)
   const { requestPermission } = useCameraPermission()
   const device = useCameraDevice('back')
 
-  const codeScanner = useCodeScanner({
-    codeTypes: ['qr', 'ean-13'],
-    onCodeScanned: codes => {
-      console.log(`Scanned ${codes.length} codes!`, codes)
+  const handleCodeScanned = async codes => {
+    if (!scanned) {
+      console.log(`Scanned!`, codes[0].value)
       setScanned(true)
       setText(codes[0].value)
-    },
+
+      try {
+        const response = await axios.get(
+          `${BASE_URL}/api/barcodes/verify/${codes[0].value}`
+        )
+
+        if (response.status === 200) {
+          console.log('Barcode is valid:', response.data)
+          setValidated(prevValidated => prevValidated + 1)
+        } else {
+          console.error('Unexpected response status:', response.status)
+        }
+      } catch (error) {
+        let errorMessage = 'Unknown error occurred.'
+        if (error.response) {
+          if (error.response.status === 404) {
+            errorMessage = error.response.data.message
+          } else {
+            errorMessage =
+              error.response.data.message || 'Unexpected error occurred.'
+          }
+        } else if (error.request) {
+          errorMessage = 'No response received from server.'
+        } else {
+          errorMessage = error.message
+        }
+        setModalContent(errorMessage)
+        setModalVisible(true)
+      }
+    }
+  }
+
+  const handleFinish = async () => {
+    try {
+      const response = await axios.post(`${BASE_URL}/api/bottles`, {
+        userId: userInfo.user._id,
+        quantity: validated,
+      })
+
+      if (response.status === 201) {
+        console.log('Bottles added successfully:', response.data)
+        setText('Not yet scanned')
+        dispatch({ type: 'UPDATE_BOTTLES', payload: validated })
+        dispatch({
+          type: 'UPDATE_BALANCE_GRC',
+          payload: response.data.bottle.rewardGRC,
+        })
+        await addActiveDay(userInfo.user._id, dispatch)
+        setValidated(0)
+      } else {
+        console.error('Error adding bottles:', response.data.message)
+      }
+    } catch (error) {
+      if (error.response) {
+        console.error('Error:', error.response.data.message)
+      } else {
+        console.error('Network error:', error.message)
+      }
+    }
+  }
+
+  const codeScanner = useCodeScanner({
+    codeTypes: ['qr', 'ean-13'],
+    onCodeScanned: handleCodeScanned,
   })
 
   const renderCamera = () => {
-    console.log('render camera')
+    // console.log('render camera')
     if (device == null) return null
 
     return (
@@ -79,41 +145,13 @@ const Scan = ({ navigation }) => {
     setHasPermission(permissionGranted)
   }
 
-  const fetchProductData = async barcode => {
-    console.log('fetch data')
-    // const apiKey = 'mm8sqkm40527w26oiw0804odjzsf57';
-    // const url = `https://api.barcodelookup.com/v3/products?barcode=${barcode}&formatted=y&key=${apiKey}`;
-
-    // try {
-    //   const response = await axios.get(url);
-    //   const data = response.data;
-    //   setText(data.products[0].title);
-    //   // console.log(data.products[0].title);
-    // } catch (error) {
-    //   console.error('Eroare la solicitarea API:', error);
-    // }
-  }
-
-  // useEffect(() => {
-  //   (async () => {
-  //     const permissionGranted = await requestPermission();
-  //     setHasPermission(permissionGranted);
-  //   })();
-  // }, [requestPermission]);
-
-  //what happens when you scan the barcode
-  const handleBarCodeScanned = ({ type, data }) => {
-    setScanned(true)
-    //setText(data);
-    fetchProductData(data)
-  }
-
   const handlePressInfo = () => {
     setModalVisible(true)
   }
 
   const handleCloseModal = () => {
     setModalVisible(false)
+    setModalContent('')
   }
 
   function renderHeader() {
@@ -147,8 +185,10 @@ const Scan = ({ navigation }) => {
           <InfoModal
             isVisible={modalVisible}
             onClose={handleCloseModal}
-            content={` Use the  📷  to quickly scan the PET's barcode or enter the code manually if the label is damaged.
-  ♻️`}
+            content={
+              modalContent ||
+              "Use the 📷 to quickly scan the PET's barcode or enter the code manually if the label is damaged. ♻️"
+            }
           />
           <Image
             source={icons.info}
@@ -167,11 +207,10 @@ const Scan = ({ navigation }) => {
     return (
       <View
         style={{
-          // position: 'absolute',
           bottom: 0,
           left: 0,
           right: 0,
-          height: 230,
+          height: 270,
           padding: SIZES.padding * 2,
           borderTopLeftRadius: SIZES.radius,
           borderTopRightRadius: SIZES.radius,
@@ -179,18 +218,37 @@ const Scan = ({ navigation }) => {
         }}
       >
         <Text style={styles.maintext}>{text}</Text>
-        {scanned && (
-          <View style={styles.buttonContainer}>
-            <Button
-              title={'Tap to Scan Again'}
-              onPress={() => {
-                setScanned(false)
-                setText('Not scanned yet')
-              }}
-              color="green"
-            />
-          </View>
-        )}
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: scanned ? 'space-between' : 'center',
+            width: '100%',
+          }}
+        >
+          {scanned && (
+            <View
+              style={[
+                styles.buttonContainer,
+                { flex: 1, marginRight: 10, paddingHorizontal: 0 },
+              ]}
+            >
+              <Button
+                title={'Scan Again'}
+                onPress={() => {
+                  setScanned(false)
+                  setText('Not scanned yet')
+                }}
+                color="green"
+              />
+            </View>
+          )}
+          {validated > 0 && (
+            <View style={[styles.buttonContainer, { flex: 1 }]}>
+              <Button title={'Finish'} onPress={handleFinish} color="green" />
+            </View>
+          )}
+        </View>
 
         <View
           style={{
@@ -202,6 +260,7 @@ const Scan = ({ navigation }) => {
           <Text style={styles.textStyle}>Other Methods</Text>
           <Text style={styles.textStyle}>Validated: {validated}</Text>
         </View>
+
         <View
           style={{
             flex: 1,
@@ -386,7 +445,7 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     marginVertical: 5,
-    marginHorizontal: 50,
+    // marginHorizontal: 50,
     borderRadius: 10,
     overflow: 'hidden',
   },

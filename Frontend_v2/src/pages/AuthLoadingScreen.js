@@ -11,8 +11,8 @@ const AuthLoadingScreen = () => {
   useEffect(() => {
     if (authChecked) {
       setTimeout(() => {
-        if (userInfo) {
-          navigation.navigate('HomeTabs')
+        if (userInfo && userInfo.user.walletAddress) {
+          navigation.navigate('Drawer')
         } else {
           navigation.navigate('Login')
         }
