@@ -10,11 +10,15 @@ import {
 import moment from 'moment'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Colors } from './styles'
+import { useAuthContext } from '../hooks/useAuthContext'
 
 export default function Schedule() {
   const [value, setValue] = useState(new Date())
 
-  const visitedDays = ['2024-04-15', '2024-04-17', '2024-04-19']
+  const { activeDays } = useAuthContext()
+  console.log('Active days:', activeDays)
+
+  const visitedDays = activeDays.map(dateString => dateString.split('T')[0])
 
   const currentWeekDays = React.useMemo(() => {
     const startOfWeek = moment().startOf('week')

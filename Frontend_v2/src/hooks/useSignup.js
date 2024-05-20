@@ -9,15 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import axios from 'axios'
 
 export const useSignUp = () => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
   const { dispatch } = useAuthContext()
-
-  const reset = () => {
-    setIsLoading(true)
-    setError(null)
-    console.log('Resetting...')
-  }
 
   const isValidEmail = email => {
     const re =
@@ -26,24 +18,19 @@ export const useSignUp = () => {
   }
 
   const signUp = async ({ email, password, firstName, lastName }) => {
-    reset()
-
     if (
       !email.trim() ||
       !password.trim() ||
       !firstName.trim() ||
       !lastName.trim()
     ) {
-      setError('Te rog să completezi toate câmpurile.')
-      setIsLoading(false)
-      return
+      return [false, 'Please fill in all fields.']
     }
 
     if (!isValidEmail(email)) {
-      setError('Formatul adresei de e-mail nu este valid.')
-      setIsLoading(false)
-      return
+      return [false, 'Invalid email format.']
     }
+
     const fcmRegistrationToken = 'Value_to_introduce_after_integration'
     const photoLink =
       'https://www.flaticon.com/free-icon/user_3177440?term=user&page=1&position=8&origin=search&related_id=3177440'
@@ -63,31 +50,33 @@ export const useSignUp = () => {
       }
 
       try {
-        const response = await axios.post(`${BASE_URL}/user/register`, userData)
+        const response = await axios.post(
+          `${BASE_URL}/api/users/login`,
+          userData
+        )
         if (response.status === 200) {
-          await AsyncStorage.setItem('userInfo', JSON.stringify(response.data))
-          dispatch({ type: 'LOGIN', payload: response.data })
+          // await AsyncStorage.setItem('userInfo', JSON.stringify(response.data))
+          // dispatch({ type: 'LOGIN', payload: response.data })
+          return [true, null]
         } else {
-          setError(
-            'A intervenit o eroare la înregistrare. Te rugăm să încerci mai târziu.'
-          )
-          setIsLoading(false)
+          return [
+            false,
+            'An error occurred during registration. Please try again later.',
+          ]
         }
       } catch (error) {
-        setError(
-          'A intervenit o eroare la înregistrare. Te rugăm să încerci mai târziu.'
-        )
-        setIsLoading(false)
+        return [
+          false,
+          'An error occurred during registration. Please try again later.',
+        ]
       }
     } catch (error) {
-      setError(
-        'A intervenit o eroare la crearea contului. Te rugăm să încerci din nou.'
-      )
-      setIsLoading(false)
-    } finally {
-      setIsLoading(false)
+      return [
+        false,
+        'An error occurred while creating the account. Please try again.',
+      ]
     }
   }
 
-  return { signUp, isLoading, error, reset }
+  return { signUp }
 }

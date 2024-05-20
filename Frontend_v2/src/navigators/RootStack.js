@@ -32,21 +32,21 @@ const RootStack = () => {
         }}
         initialRouteName="HomeTabs"
       >
-        {/* <Stack.Screen
+        <Stack.Screen
           name="AuthLoading"
           component={AuthLoadingScreen}
           options={{ headerShown: false }}
-        />*/}
-        {/* <Stack.Screen
+        />
+        <Stack.Screen
           name="Login"
           component={Login}
           options={{ headerShown: false }}
-        /> */}
-        {/* <Stack.Screen
+        />
+        <Stack.Screen
           name="Register"
           component={Register}
           options={{ headerShown: false }}
-        /> */}
+        />
 
         <Stack.Screen
           name="Drawer"

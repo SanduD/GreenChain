@@ -4,24 +4,49 @@ import { Colors } from '../components/styles'
 import Card from '../components/Card'
 import { COLORS, icons, SIZES } from '../constants'
 import Icon from 'react-native-vector-icons/FontAwesome'
+import { useAuthContext } from '../hooks/useAuthContext'
+
+function calculateCO2Saved(bottles, kwhReduced, ticketsUsed) {
+  const CO2_PER_BOTTLE = (82.8 * 4) / 1000
+  const CO2_PER_KWH = 226 / 1000
+  const CO2_PER_TICKET = 800 / 1000
+
+  const co2SavedFromBottles = bottles * CO2_PER_BOTTLE
+  const co2SavedFromKwh = kwhReduced * CO2_PER_KWH
+  const co2SavedFromTickets = ticketsUsed * CO2_PER_TICKET
+
+  const totalCO2Saved =
+    co2SavedFromBottles + co2SavedFromKwh + co2SavedFromTickets
+
+  return totalCO2Saved
+}
 
 function Middle({ percent }) {
+  const { userInfo, bottles, kwhReduced, ticketsUsed } = useAuthContext()
+
+  const totalCO2Saved = calculateCO2Saved(bottles, kwhReduced, ticketsUsed)
+
+  const totalCO2SavedText = `${totalCO2Saved.toFixed(1)} kg`
   return (
     <View style={styles.main}>
       <View style={styles.imageContainer}>
         <Image
+          source={
+            userInfo && userInfo.user.photo
+              ? { uri: userInfo.user.photo }
+              : require('../assets/icons/user.png')
+          }
           style={styles.image}
-          source={require('../assets/icons/user.png')}
         />
         <Text
           style={{ fontSize: 16, color: Colors.primary, fontWeight: 'bold' }}
         >
-          Sandu Dragos
+          {userInfo && userInfo.user.name}
         </Text>
         <Text
           style={{ fontSize: 16, color: Colors.primary, fontWeight: '500' }}
         >
-          dragos@gmail.com
+          {userInfo && userInfo.user.email}{' '}
         </Text>
       </View>
 
@@ -38,7 +63,7 @@ function Middle({ percent }) {
               }}
             />
           }
-          cardTextTwo={`1000g
+          cardTextTwo={`${totalCO2SavedText}
   saved CO2`}
           style={{ backgroundColor: COLORS.lightGreen, width: 200 }}
         />
@@ -52,7 +77,6 @@ function Middle({ percent }) {
               }}
             />
           }
-          // cardTextOne="1000⚡"
           cardTextTwo={`Top ${percent}% of all users`}
           style={{ backgroundColor: COLORS.lightGreen, marginLeft: 10 }}
         />
@@ -62,6 +86,11 @@ function Middle({ percent }) {
 }
 
 function Bottom() {
+  const { bottles, kwhReduced, ticketsUsed } = useAuthContext()
+
+  const bottlesString = bottles.toString() + ' ♻️'
+  const kwhReducedString = kwhReduced.toString() + ' ⚡'
+  const ticketsUsedString = ticketsUsed.toString() + ' 🎫'
   return (
     <View style={styles.bottomContainer}>
       <Text
@@ -80,7 +109,7 @@ function Bottom() {
           icon={
             <Image source={icons.bottle} style={{ width: 40, height: 40 }} />
           }
-          cardTextOne="100 ♻️"
+          cardTextOne={bottlesString}
           cardText="Recycled"
           style={{ backgroundColor: COLORS.green, marginLeft: -10 }}
         />
@@ -88,7 +117,7 @@ function Bottom() {
           icon={
             <Image source={icons.energy} style={{ width: 40, height: 40 }} />
           }
-          cardTextOne="1000⚡"
+          cardTextOne={kwhReducedString}
           cardText="Khw Reduced"
           style={{ backgroundColor: COLORS.green, marginLeft: 10 }}
         />
@@ -96,7 +125,7 @@ function Bottom() {
           icon={
             <Image source={icons.ticket} style={{ width: 40, height: 40 }} />
           }
-          cardTextOne="10 🎫"
+          cardTextOne={ticketsUsedString}
           cardText="Tickets used"
           style={{ backgroundColor: COLORS.green, marginLeft: 10 }}
         />
