@@ -30,13 +30,14 @@ const addBill = async (req, res) => {
 
   const imagePath = path.join(__dirname, '../uploads', req.file.filename)
   let result = await extractDataFromBill(imagePath, type)
+  console.log(result)
   if (!result) {
     return res
       .status(500)
       .json({ message: 'Unable to extract data from the bill' })
   }
 
-  result = parseFloat(result.replace(',', '.'))
+  result = parseFloat(result.replace(',', '.')).toFixed(2)
   const rewardGRC = calculateRewardGRC('Bill', result)
 
   const bill = new Bill({

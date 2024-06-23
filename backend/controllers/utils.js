@@ -103,7 +103,7 @@ const calculateRewardGRC = (scanType, quantity) => {
       throw new Error('Invalid scan type')
   }
 
-  return rewardGRC
+  return rewardGRC.toFixed(2)
 }
 
 export {

@@ -62,7 +62,7 @@ const Scan = ({ navigation }) => {
           console.log('Barcode is valid:', response.data)
           setValidated(prevValidated => prevValidated + 1)
         } else {
-          console.error('Unexpected response status:', response.status)
+          console.log('Unexpected response status:', response.status)
         }
       } catch (error) {
         let errorMessage = 'Unknown error occurred.'
@@ -102,13 +102,13 @@ const Scan = ({ navigation }) => {
         await addActiveDay(userInfo.user._id, dispatch)
         setValidated(0)
       } else {
-        console.error('Error adding bottles:', response.data.message)
+        console.log('Error adding bottles:', response.data.message)
       }
     } catch (error) {
       if (error.response) {
-        console.error('Error:', error.response.data.message)
+        console.log('Error:', error.response.data.message)
       } else {
-        console.error('Network error:', error.message)
+        console.log('Network error:', error.message)
       }
     }
   }

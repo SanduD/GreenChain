@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import {
   StyleSheet,
   SafeAreaView,
@@ -8,7 +8,6 @@ import {
   Image,
 } from 'react-native'
 import moment from 'moment'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import { Colors } from './styles'
 import { useAuthContext } from '../hooks/useAuthContext'
 
@@ -16,11 +15,14 @@ export default function Schedule() {
   const [value, setValue] = useState(new Date())
 
   const { activeDays } = useAuthContext()
-  console.log('Active days:', activeDays)
+  console.log('Active days schedule:', activeDays)
 
-  const visitedDays = activeDays.map(dateString => dateString.split('T')[0])
+  const visitedDays = useMemo(
+    () => activeDays.map(dateString => dateString.split('T')[0]),
+    [activeDays]
+  )
 
-  const currentWeekDays = React.useMemo(() => {
+  const currentWeekDays = useMemo(() => {
     const startOfWeek = moment().startOf('week')
     return Array.from({ length: 7 }).map((_, index) => {
       const date = moment(startOfWeek).add(index, 'day')
@@ -31,21 +33,9 @@ export default function Schedule() {
         visited: visitedDays.includes(date.format('YYYY-MM-DD')),
       }
     })
-  }, [])
-
-  useEffect(() => {
-    const loadVisitedDays = async () => {
-      const storedDays = await AsyncStorage.getItem('visitedDays')
-      if (storedDays) {
-        setVisitedDays(JSON.parse(storedDays))
-      }
-    }
-
-    loadVisitedDays()
-  }, [])
+  }, [visitedDays])
 
   const handleDayPress = async item => {
-    // setValue(item.date)
     console.log('Day pressed:', item.dateString)
   }
 

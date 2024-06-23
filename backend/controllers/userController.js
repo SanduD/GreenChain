@@ -27,6 +27,8 @@ const registerUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
   const user = await User.findOne({ email: req.body.email })
+  // console.log(user)
+
   if (!user) {
     registerUser(req, res)
     return
@@ -71,7 +73,7 @@ const walletAuth = async (req, res) => {
 const addActiveDay = async (req, res) => {
   const userId = req.body.userId
 
-  console.log('userId:', userId)
+  console.log('active day', userId)
 
   try {
     const user = await User.findById(userId)
@@ -83,12 +85,14 @@ const addActiveDay = async (req, res) => {
     const dayAlreadyActive = user.activeDays.some(
       day => day.toDateString() === currentDay.toDateString()
     )
+    console.log('dayAlreadyActive', dayAlreadyActive)
 
     if (!dayAlreadyActive) {
       user.activeDays.push(currentDay)
       await user.save()
       return res.status(200).json({ message: 'Active day added', user })
     } else {
+      console.log('here')
       return res.status(304).json({
         message: 'Active day already recorded for today',
         user,

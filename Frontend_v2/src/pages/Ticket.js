@@ -108,7 +108,7 @@ const TicketScreen = () => {
       } else {
         const source = response.assets[0]
         setSelectedImage(source)
-        console.log(source)
+        // console.log(source)
       }
     })
   }
@@ -126,7 +126,7 @@ const TicketScreen = () => {
       } else {
         const source = response.assets[0]
         setSelectedImage(source)
-        console.log(source)
+        // console.log(source)
       }
     })
   }
@@ -164,10 +164,17 @@ const TicketScreen = () => {
             source={require('../assets/icons/image.png')}
             style={styles.iconGalery}
           />
-          <Text style={styles.buttonText}>Select the ticket from Gallery</Text>
-          <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+          {selectedImage ? (
+            <Text style={styles.buttonText}>Ticket selected</Text>
+          ) : (
+            <View>
+              <Text style={styles.buttonText}>
+                Select the ticket from Gallery
+              </Text>
+              <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+            </View>
+          )}
         </TouchableOpacity>
-
         <TouchableOpacity style={styles.sendButton} onPress={sendData}>
           <Text style={styles.sendButtonText}>Check ticket</Text>
         </TouchableOpacity>

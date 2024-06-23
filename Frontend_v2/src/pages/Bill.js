@@ -53,13 +53,13 @@ const BillScreen = () => {
           'Content-Type': 'multipart/form-data',
         },
       })
-      console.log('Bill sent:', response.data.savedBill.rewardGRC)
       await addActiveDay(userInfo.user._id, dispatch)
 
       const khw_reduced =
         AVERAGE_KWH - parseInt(response.data.savedBill.quantity)
-      if (khw_reduced > 0)
+      if (khw_reduced > 0) {
         dispatch({ type: 'UPDATE_KWH_REDUCED', payload: khw_reduced })
+      }
 
       dispatch({
         type: 'UPDATE_BALANCE_GRC',
@@ -181,14 +181,25 @@ const BillScreen = () => {
             source={require('../assets/icons/image.png')}
             style={styles.icon}
           />
-          <Text style={styles.buttonText}>Select the bill from Gallery</Text>
-          <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+          {selectedImage ? (
+            <Text style={styles.buttonText}>Bill selected</Text>
+          ) : (
+            <View>
+              <Text style={styles.buttonText}>
+                Select the bill from Gallery
+              </Text>
+              <Text style={styles.buttonSecondaryText}>PNG or JPEG</Text>
+            </View>
+          )}
         </TouchableOpacity>
 
         <Picker
           selectedValue={selectedBillType}
           style={styles.picker}
-          onValueChange={itemValue => setSelectedBillType(itemValue)}
+          onValueChange={itemValue => {
+            setSelectedBillType(itemValue)
+            console.log('selectedBillType:', itemValue)
+          }}
         >
           <Picker.Item label="Select Bill Type" value="" />
           <Picker.Item label="Gas - Engie" value="Engie_gas" />
@@ -290,7 +301,6 @@ const styles = StyleSheet.create({
   orText: {
     fontSize: 18,
     color: '#000',
-    // marginVertical: 10,
   },
   orContainer: {
     flexDirection: 'row',
@@ -307,7 +317,9 @@ const styles = StyleSheet.create({
     width: '90%',
     backgroundColor: COLORS.white,
     marginVertical: 20,
+    color: 'black',
   },
+
   sendButton: {
     backgroundColor: COLORS.primary,
     padding: 20,

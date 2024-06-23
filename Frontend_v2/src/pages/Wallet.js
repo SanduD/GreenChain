@@ -53,7 +53,7 @@ async function fetchTransactions(userId) {
 
     return data
   } catch (error) {
-    console.error('Error:', error)
+    console.log('Error:', error)
     return []
   }
 }
