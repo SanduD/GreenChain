@@ -89,7 +89,6 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     setModalVisible(false)
     const [success, errorLogin] = await googleSignIn()
-
     if (success) {
       if (!walletAddress) {
         await open()

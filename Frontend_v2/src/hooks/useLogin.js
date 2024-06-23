@@ -59,6 +59,7 @@ export const useLogin = () => {
     try {
       await GoogleSignin.hasPlayServices()
       const user = (await GoogleSignin.signIn()).user
+      console.log('user:', user)
 
       const response = await axios.post(`${BASE_URL}/api/users/login`, {
         email: user.email,
@@ -66,6 +67,7 @@ export const useLogin = () => {
         photo: user.photo,
         fcmRegistrationToken: fcmRegistrationToken,
       })
+      console.log(response.data)
       if (response.status === 200) {
         await AsyncStorage.setItem('email', user.email)
 
@@ -91,7 +93,7 @@ export const useLogin = () => {
       const response = await axios.get(`${BASE_URL}/api/bottles/${userId}`)
       return response.data.bottles.length
     } catch (error) {
-      console.error('Error fetching bottles:', error)
+      console.log('Error fetching bottles:', error)
       return 0
     }
   }
@@ -101,7 +103,7 @@ export const useLogin = () => {
       const response = await axios.get(`${BASE_URL}/api/tickets/${userId}`)
       return response.data.tickets.length
     } catch (error) {
-      console.error('Error fetching tickets:', error)
+      console.log('Error fetching tickets:', error)
       return 0
     }
   }
@@ -119,7 +121,7 @@ export const useLogin = () => {
 
       return totalKhwReduced
     } catch (error) {
-      console.error('Error fetching bills:', error)
+      console.log('Error fetching bills:', error)
       return 0
     }
   }
@@ -130,7 +132,7 @@ export const useLogin = () => {
       )
       return response.data
     } catch (error) {
-      console.error('Error fetching balance:', error)
+      console.log('Error fetching balance:', error)
       return 0
     }
   }
@@ -174,7 +176,7 @@ export const useLogin = () => {
         return [false, 'An error occurred during wallet authentication.']
       }
     } catch (error) {
-      console.error('Error during wallet authentication:', error)
+      console.log('Error during wallet authentication:', error)
       return [
         false,
         'Error during wallet authentication. Please try again later.',
@@ -203,7 +205,7 @@ export const useLogin = () => {
         return [false, 'An error occurred during wallet authentication.']
       }
     } catch (error) {
-      console.error('Error during wallet authentication:', error)
+      console.log('Error during wallet authentication:', error)
       return [
         false,
         'Error during wallet authentication. Please try again later.',

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">GreenChain</string>
+    <string name="google_maps_key">AIzaSyAEeGXv8eYvqIxKcUB7HBtx4pN_8xk4SDY</string>
+
 </resources>

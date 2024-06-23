@@ -7,9 +7,10 @@ const addActiveDay = async (userId, dispatch) => {
     const response = await axios.post(`${BASE_URL}/api/users/activeDay`, {
       userId: userId,
     })
+    console.log('Add new active day:', response.message)
 
     if (response.status === 200) {
-      console.log('Active day added:', response.data)
+      console.log('Active day added:', response.message)
       dispatch({
         type: 'UPDATE_ACTIVE_DAYS',
         payload: new Date().toISOString(),

@@ -47,9 +47,13 @@ const History = () => {
 
         const combinedData = [...billsData, ...bottlesData, ...ticketsData]
 
+        combinedData.sort(
+          (a, b) => new Date(b.savedAtDate) - new Date(a.savedAtDate)
+        )
+
         setData(combinedData)
       } catch (error) {
-        console.error('Error fetching data:', error)
+        console.log('Error fetching data:', error)
       }
     }
 

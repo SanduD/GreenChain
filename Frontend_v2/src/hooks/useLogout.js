@@ -17,7 +17,7 @@ export const useLogout = () => {
       const isSignedIn = await GoogleSignin.isSignedIn()
       console.log('isSignedIn:', isSignedIn)
       if (isSignedIn) {
-        await GoogleSignin.revokeAccess()
+        // await GoogleSignin.revokeAccess()
         await GoogleSignin.signOut()
       } else {
         const currentUser = auth().currentUser
