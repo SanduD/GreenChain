@@ -45,7 +45,6 @@ By combining these technologies, GreenChain offers a robust, scalable, and secur
 <img src="https://github.com/user-attachments/assets/b5ade973-77b7-43c4-a614-51d9dfcfa691" width="300"/>
 <img src="https://github.com/user-attachments/assets/9f0db868-f419-418e-a1a0-adbdb27ca175" width="300"/>
 <img src="https://github.com/user-attachments/assets/a16ea159-c808-4071-8a9d-e993f48ea362" width="300"/>
-<img src="https://github.com/user-attachments/assets/bb4df453-b59d-4023-ab16-6aee30f53753" width="300"/>
 <img src="https://github.com/user-attachments/assets/f74d5185-9b85-445a-a57c-0dc39950c856" width="300"/>
 <img src="https://github.com/user-attachments/assets/dc811489-f588-41d8-965a-41871dea3768" width="300"/>
 <img src="https://github.com/user-attachments/assets/e896bf40-9e99-4128-9c38-9c7990ee4e67" width="300"/>
