@@ -17,6 +17,8 @@ export const useLogin = () => {
     return re.test(String(email).toLowerCase())
   }
 
+  const fcmRegistrationToken = 'randomFcmToken1234567890'
+
   const login = async (email, password) => {
     if (!email.trim() || !password.trim()) {
       return [false, 'Please fill in all fields.']
@@ -31,14 +33,15 @@ export const useLogin = () => {
         email,
         password
       )
-      // console.log('User signed in with Firebase!', userCredentials.user.email)
+      console.log('User signed in with Firebase!', userCredentials.user.email)
 
       const response = await axios.post(`${BASE_URL}/api/users/login`, {
         email,
+        fcmRegistrationToken: fcmRegistrationToken,
       })
       console.log('response:', response.data)
       if (response.status === 200) {
-        await AsyncStorage.setItem('email', user.email)
+        await AsyncStorage.setItem('email', userCredentials.user.email)
 
         return [true, null]
       } else {
@@ -48,12 +51,10 @@ export const useLogin = () => {
         ]
       }
     } catch (error) {
-      // console.error(error)
-      return [false, 'Email/Password is incorrect. Please try again.']
+      console.error(error)
+      return [false, error]
     }
   }
-
-  const fcmRegistrationToken = 'Value_to_introduce_after_integration'
 
   const googleSignIn = async () => {
     try {
@@ -146,6 +147,7 @@ export const useLogin = () => {
       }
 
       await AsyncStorage.removeItem('email')
+      console.log(walletAddress)
 
       const response = await axios.post(`${BASE_URL}/api/users/wallet-auth`, {
         email: email,

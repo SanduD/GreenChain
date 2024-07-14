@@ -58,20 +58,7 @@ const Register = () => {
     })
 
     if (success) {
-      if (!walletAddress) {
-        await open()
-      }
-
-      if (walletAddress) {
-        const [successWalletAuth, errorWalletAuth] = await walletAuthForNewUser(
-          values.email,
-          walletAddress
-        )
-        if (!successWalletAuth) {
-          setError(errorWalletAuth)
-          setModalVisible(true)
-        } else navigation.navigate('Drawer')
-      }
+      navigation.navigate('Login')
     } else {
       setError(error)
       setModalVisible(true)

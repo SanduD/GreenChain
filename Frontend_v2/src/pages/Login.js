@@ -61,6 +61,8 @@ const Login = () => {
   const handleLogIn = async () => {
     setModalVisible(false)
     const [success, errorLogin] = await login(email, password)
+    console.log('LOGIN PAGEEE')
+    console.log(success, errorLogin)
     if (success) {
       if (!walletAddress) {
         await open()
@@ -89,6 +91,8 @@ const Login = () => {
   const handleGoogleSignIn = async () => {
     setModalVisible(false)
     const [success, errorLogin] = await googleSignIn()
+    console.log('LOGIN PAGEEE')
+    console.log(success, errorLogin)
     if (success) {
       if (!walletAddress) {
         await open()

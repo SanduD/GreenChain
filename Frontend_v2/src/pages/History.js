@@ -121,6 +121,7 @@ const styles = StyleSheet.create({
   itemTitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    color: '#666',
   },
   itemSubtitle: {
     fontSize: 14,
