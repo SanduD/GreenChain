@@ -101,6 +101,10 @@ const Scan = ({ navigation }) => {
         })
         await addActiveDay(userInfo.user._id, dispatch)
         setValidated(0)
+
+        errorMessage = `Well done! You just scanned ${validated} bottles!`
+        setModalContent(errorMessage)
+        setModalVisible(true)
       } else {
         console.log('Error adding bottles:', response.data.message)
       }

@@ -33,7 +33,7 @@ export const useSignUp = () => {
 
     const fcmRegistrationToken = 'Value_to_introduce_after_integration'
     const photoLink =
-      'https://www.flaticon.com/free-icon/user_3177440?term=user&page=1&position=8&origin=search&related_id=3177440'
+      'https://lh3.googleusercontent.com/a/ACg8ocJc39YPPp5b6WE5gxGboHqca4GL04Tf4c3B_ROSqyIU6oJHUq0=s96-c'
 
     try {
       const userCredentials = await auth().createUserWithEmailAndPassword(

@@ -47,7 +47,10 @@ const loginUser = async (req, res) => {
 }
 
 const walletAuth = async (req, res) => {
-  const user = await User.findOne({ email: req.body.email })
+  // console.log('walletAuth', req.body)
+  const user = await User.findOne({
+    email: new RegExp(`^${req.body.email}$`, 'i'),
+  })
   if (!user) return res.status(500).json({ message: 'User not found!' })
 
   const walletAddress = req.body.walletAddress
@@ -61,6 +64,7 @@ const walletAuth = async (req, res) => {
       { walletAddress: walletAddress },
       { new: true }
     )
+    console.log('updatedUser', updatedUser)
     const token = createToken(user._id)
     res.status(200).json({ user: updatedUser, jwt: token })
   } catch (error) {
